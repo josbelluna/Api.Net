@@ -1,12 +1,12 @@
-#Api Net
+# Api Net
 
 [![NuGet](http://img.shields.io/nuget/v/Api.Net.svg)](https://www.nuget.org/packages/Api.Net/)
 
-###What is `Api.Net`?
+### What is `Api.Net`?
 Api.net is a simple implementation of web api using the Repository/Service/Dto patterns and based on Asp Net Core Mvc. 
 
-###How do I get started?
-#####1. In your startup.cs add
+### How do I get started?
+##### 1. In your startup.cs add
 ```csharp
 public class Startup
 {        
@@ -20,7 +20,7 @@ public class Startup
     }
 }
 ```
-#####2. Create DbContext in TestContext.cs
+##### 2. Create DbContext in TestContext.cs
 ```csharp
 public partial class TestContext : DbContext
 {
@@ -29,7 +29,7 @@ public partial class TestContext : DbContext
     public virtual DbSet<Author> Authors { get; set; }
 }
 ```
-#####3. Create Dto in AuthorDto.cs as 
+##### 3. Create Dto in AuthorDto.cs as 
 ```csharp
 public class AuthorDto : Dto<AuthorDto, Author>
 {
@@ -40,7 +40,7 @@ public class AuthorDto : Dto<AuthorDto, Author>
 ```json
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
-###Rest urls 
+### Rest urls 
 
 Api.Net creates the following endpoints for each dto:
 ```csharp
@@ -58,7 +58,7 @@ And they will return the following status codes
 * 500 //Internal Server Error
 ```
 
-###Changing default route prefix 
+### Changing default route prefix 
 By default Api.Net use /api for all routes, to change this in Startup.cs
 ```csharp
 public class Startup
@@ -73,7 +73,7 @@ Now author endpoint will be in /api/myblog/author
 ```json
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
-###Changing endpoint name 
+### Changing endpoint name 
 The convention to resolve the name of the endpoint is the class name without the suffix Dto. To change this behaviour just add the attribute ApiEndpoint in your AuthorDto.cs as
 ```csharp
 [ApiEndpoint("authors")]
@@ -86,7 +86,7 @@ And the result endpoint api/myblog/authors will bring
 ```json
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
-###Mapping dtos
+### Mapping dtos
 Api.Net mappings are entirely based on Autommaper. They allow us to create very complex mapping an conventions to facilitate our work. By convention all the properties in the dto will map the properties in the entity if they has the same name so for example:
 ```csharp
 public partial class Author
@@ -136,20 +136,20 @@ Will return
 ```json
 {"count": 1,"data": [{"id": 2,"name": "Josbel","lastName": "Luna","fullName": "Josbel Luna"}]}
 ```
-###Filtering and ordering and paginating data
+### Filtering and ordering and paginating data
 Aumming `GET api/myblog/authors` returns the following data
 ```json
 {"count":3,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
 ```
 We could filter the data with:
-#####Equality
+##### Equality
 To find and exact value just write in the querystring the name of the field + = + the value you want to match like:
 
 `GET /api/myblog/authors?name=john`
 ```json
 {"count":1,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
 ```
-#####More or less
+##### More or less
 you could query this with the following statements
 `/api/myblog/authors?id>=2 //More than 2`
 `/api/myblog/authors?id>==2 //More or equal to 2`
@@ -160,20 +160,20 @@ you could query this with the following statements
 ```json
 {"count":2,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
 ```
-####Alternation (Or)
+#### Alternation (Or)
 Just separate the statements by `,` as follows:
 
 `GET /api/myblog/authors?id=2,6`
 ```json
 {"count":2,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
 ```
-####Between
+#### Between
 Just separate the statements by `|` as follows:
 `GET /api/myblog/authors?id=1|5`
 ```json
 {"count":2,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
 ```
-####Match Patterns
+#### Match Patterns
 * Use the `$` character as:
 `Value$$ //Start with value`
 `$$Value //End with value`
@@ -199,7 +199,7 @@ Just separate the statements by `|` as follows:
 {"count":1,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}]}
 ```
 
-###Events in the Dto
+### Events in the Dto
 Api.Net provide a serveral events in their Dto implementation, these events are:
 ```csharp
 * BeforeGet
@@ -229,7 +229,7 @@ public class AuthorDto : Dto<AuthorDto, Author>
     }
 }
 ```
-###Validations in the Dto
+### Validations in the Dto
 You could use dto events to actually validate the endpoint and throwing a ```ValidateException``` inside of then will result status code bad request with te message of the error as follows: 
 ```csharp
 [ApiEndpoint("authors")]
