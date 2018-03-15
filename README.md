@@ -1,11 +1,18 @@
-# Api Net
+# Api.Net
 
 [![NuGet](http://img.shields.io/nuget/v/Api.Net.svg)](https://www.nuget.org/packages/Api.Net/)
 
 ### What is `Api.Net`?
-Api.net is a simple implementation of web api using the Repository/Service/Dto patterns and based on Asp Net Core Mvc. 
+Api.Net is a simple implementation of web api using the Repository/Service/Dto patterns and based on Asp Net Core Mvc. 
 
-### How do I get started?
+# Table of Contents
+1. [Getting Started](#get-started)
+2. [Example2](#example2)
+3. [Third Example](#third-example)
+
+
+
+### <a id="get-started" /> How do I get started? 
 ##### 1. In your startup.cs add
 ```csharp
 public class Startup
@@ -36,7 +43,7 @@ public class AuthorDto : Dto<AuthorDto, Author>
     public string Name { get; set; }
 }
 ```
-#####4. Populate some data in database, then browse type /api/author 
+##### 4. Populate some data in database, then browse type /api/author 
 ```json
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
@@ -305,11 +312,11 @@ This method will throw the ```ValidateException``` and stop the validation avoid
 
 Be aware about using complex validation inside the dtos, for that cases you could use Service Validation instead.
 
-###Understanding Api.Net Architecture
+### Understanding Api.Net Architecture
 
 To undertand how Api.Net works you must undertand the following diagram
 
-
+![Architecture](./Api.net/docs/images/architecture.jpg)
 
 In words it means
 
