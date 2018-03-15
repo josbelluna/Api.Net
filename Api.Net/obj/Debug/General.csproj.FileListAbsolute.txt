@@ -1,0 +1,38 @@
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\General.dll.config
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\General.dll
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\General.pdb
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\AutoMapper.dll
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\EntityFramework.dll
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\itextsharp.dll
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\Microsoft.ReportViewer.Common.dll
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\Microsoft.ReportViewer.ProcessingObjectModel.DLL
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\Microsoft.ReportViewer.WebForms.DLL
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\System.Linq.Dynamic.dll
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\AutoMapper.xml
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\EntityFramework.xml
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\bin\Debug\itextsharp.xml
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\obj\Debug\General.csprojResolveAssemblyReference.cache
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\obj\Debug\General.csproj.CoreCompileInputs.cache
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\obj\Debug\General.dll
+C:\Users\jluna\Documents\Projects\mardomapi\MardomAPI\General\obj\Debug\General.pdb
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\General.dll.config
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\General.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\General.pdb
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\AutoMapper.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\EntityFramework.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\itextsharp.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\Microsoft.ReportViewer.Common.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\Microsoft.ReportViewer.ProcessingObjectModel.DLL
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\Microsoft.ReportViewer.WebForms.DLL
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\System.Linq.Dynamic.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\AutoMapper.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\EntityFramework.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\bin\Debug\itextsharp.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\obj\Debug\General.csprojResolveAssemblyReference.cache
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\obj\Debug\General.csproj.CoreCompileInputs.cache
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\obj\Debug\General.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\General\obj\Debug\General.pdb

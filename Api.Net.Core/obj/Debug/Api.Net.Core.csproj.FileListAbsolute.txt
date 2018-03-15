@@ -1,0 +1,21 @@
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\obj\Debug\Api.Net.Core.csproj.CoreCompileInputs.cache
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\obj\Debug\Api.Net.Core.csprojResolveAssemblyReference.cache
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\Api.Net.Core.dll.config
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\Api.Net.Core.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\Api.Net.Core.pdb
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\AutoMapper.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\EntityFramework.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\System.Linq.Dynamic.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\AutoMapper.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\EntityFramework.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\obj\Debug\Api.Net.Core.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\obj\Debug\Api.Net.Core.pdb
+C:\Users\jluna\Documents\Projects\Api.Net\Api.Net.Core\bin\Debug\Api.Net.Core.dll.config
+C:\Users\jluna\Documents\Projects\Api.Net\Api.Net.Core\bin\Debug\Api.Net.Core.dll
+C:\Users\jluna\Documents\Projects\Api.Net\Api.Net.Core\bin\Debug\Api.Net.Core.pdb
+C:\Users\jluna\Documents\Projects\Api.Net\Api.Net.Core\obj\Debug\Api.Net.Core.csprojResolveAssemblyReference.cache
+C:\Users\jluna\Documents\Projects\Api.Net\Api.Net.Core\obj\Debug\Api.Net.Core.csproj.CoreCompileInputs.cache
+C:\Users\jluna\Documents\Projects\Api.Net\Api.Net.Core\obj\Debug\Api.Net.Core.dll
+C:\Users\jluna\Documents\Projects\Api.Net\Api.Net.Core\obj\Debug\Api.Net.Core.pdb

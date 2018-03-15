@@ -1,0 +1,13 @@
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\Api.Net.Core.dll.config
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\Api.Net.Core.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\Api.Net.Core.pdb
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\AutoMapper.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\EntityFramework.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\System.Linq.Dynamic.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\AutoMapper.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\EntityFramework.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\obj\Release\Api.Net.Core.csproj.CoreCompileInputs.cache
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\obj\Release\Api.Net.Core.dll
+C:\Users\jluna\Documents\Visual Studio 2017\Projects\ApplicationManagerApi\Api.Net.Core\obj\Release\Api.Net.Core.pdb
