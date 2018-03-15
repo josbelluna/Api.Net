@@ -7,8 +7,8 @@ Api.Net is a simple implementation of web api using the Repository/Service/Dto p
 
 # Table of Contents
 1. [Getting Started](#get-started)
-2. [Example2](#example2)
-3. [Third Example](#third-example)
+2. [Configuration](#configuration)
+3. [Working With Dtos](#dtos)
 
 
 
@@ -65,7 +65,8 @@ And they will return the following status codes
 * 500 //Internal Server Error
 ```
 
-### Changing default route prefix 
+### <a id="configuration" /> Configuration
+#### Changing default route prefix 
 By default Api.Net use /api for all routes, to change this in Startup.cs
 ```csharp
 public class Startup
@@ -80,7 +81,7 @@ Now author endpoint will be in /api/myblog/author
 ```json
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
-### Changing endpoint name 
+#### Changing endpoint name 
 The convention to resolve the name of the endpoint is the class name without the suffix Dto. To change this behaviour just add the attribute ApiEndpoint in your AuthorDto.cs as
 ```csharp
 [ApiEndpoint("authors")]
@@ -93,7 +94,9 @@ And the result endpoint api/myblog/authors will bring
 ```json
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
-### Mapping dtos
+
+### <a id="dtos" /> Working with Dtos
+#### Mapping dtos
 Api.Net mappings are entirely based on Autommaper. They allow us to create very complex mapping an conventions to facilitate our work. By convention all the properties in the dto will map the properties in the entity if they has the same name so for example:
 ```csharp
 public partial class Author
