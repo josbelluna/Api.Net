@@ -543,7 +543,7 @@ Be aware about using complex validation inside the dtos, for that cases you coul
 
 To undertand how Api.Net works you must undertand the following diagram
 
-![Architecture](Api.Net/Api.Net/docs/images/architecture.jpg)
+![Architecture](https://github.com/josbelluna/Api.Net/Api.Net/docs/images/architecture.jpg)
 
 In words it means
 
