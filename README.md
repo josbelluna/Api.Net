@@ -11,9 +11,16 @@ Api.Net is a simple implementation of web api using the Repository/Service/Dto p
 3. [Configuration](#configuration)
 4. [Working With Dtos](#dtos)
 5. [Filtering Data](#filtering)
-5. [Ordering Data](#ordering)
-5. [Paginating Data](#pagination)
-5. [Showing/Hidding fields](#fields)
+6. [Ordering Data](#ordering)
+7. [Paginating Data](#pagination)
+8. [Showing/Hidding fields](#fields)
+9. [Undertanding Api.Net architecture](#architecture)
+10. [Events](#events)
+11. [Validation](#validations)
+12. [Custom Repositories](#custom-repositories)
+13. [Custom Services](#custom-services)
+14. [Custom Controllers](#custom-controllers)
+15. [Working with dependency injection](#custom-controllers)
 
 
 
@@ -246,7 +253,7 @@ The all filters explained before can be applied to inner properties just adding 
 {"count":1,"data":[{"id":7,"name":"Managing concurrency in databases","authorId":5,"author":{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}}]}
 ```
 
-###6. <a id="ordering" Ordering Data /> 
+### 6. <a id="ordering"/> Ordering Data 
 To select fields to order you must specified that in `orderdy` param as
 
 `Get /api/myblog/authors?orderby=name`
@@ -261,9 +268,42 @@ and for decending order just add another param as `decending=true` as
 ```json
 {"count":3,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
 ```
-###7. <a id="paginating" Paginating Data /> 
+### 7. <a id="paginating"/> Paginating Data 
+Api.Net provides a pagination mechanism by just adding two params `page` and `pagesize`, by default the page is always `1` and pagesize is `0` witch means all. making a request to the next endpoint
 
-### Events in the Dto
+`GET /api/myblog/authors?pagesize=1`
+will return
+```json
+{"count":3,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}]}
+```
+Notice at the count metadata attribute, it shows `3` meaning you are not filtering the data but paginating it, to access to the next page just make
+
+`GET /api/myblog/authors?pagesize=1&page=2`
+will return
+```json
+{"count":3,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
+```
+And you could continue doing the same until consuming all the data.
+### 8. <a id="fields"/> Showing/Hinding fields
+Sometimes you need just an specific part of the dto instead of bringin the entire object, for example populating a select box when you must of the times just need the id and name fields.
+
+You could create another dto with the 2 properties but for that you have to make another endpoint for each new dto. Api.Net provides instead the the fields param witch allows to specify the fields you want to bring to you. You could request as
+
+`GET /api/myblog/authors?fields=id,name`
+
+```json
+{"count":3,"data":[{"id":2,"name":"Josbel"},{"id":5,"name":"John"},{"id":6,"name":"Carl"}]}
+```
+
+This aims to reduce the resources you consuming sending/receiving and storing data and the consult to the database is impacted too reducing the fields you're selecting. This provides to you a safe endpoint to avoid consults getting slowed when you increment the properties used in the dto.
+
+You could hide instead show fields by use the `exclude` param
+
+`GET /api/myblog/authors?exclude=name,lastname`
+```json
+{"count":3,"data":[{"id":2,"fullName":"Josbel Luna"},{"id":5,"fullName":"John Doe"},{"id":6,"fullName":"Carl Johnson"}]}
+```
+### 9. <a id="events"/> Events in the Dto
 Api.Net provide a serveral events in their Dto implementation, these events are:
 ```csharp
 * BeforeGet
@@ -293,7 +333,8 @@ public class AuthorDto : Dto<AuthorDto, Author>
     }
 }
 ```
-### Validations in the Dto
+Later you'll see you could use events at service layer.
+### 10. <a id="validations"/> Validations in the Dto
 You could use dto events to actually validate the endpoint and throwing a ```ValidateException``` inside of then will result status code bad request with te message of the error as follows: 
 ```csharp
 [ApiEndpoint("authors")]
@@ -367,9 +408,9 @@ public override void ValidateSave(AuthorDto dto, Error error)
 ```
 This method will throw the ```ValidateException``` and stop the validation avoiding for example a possible ```NullReferenceException``` in the next lines.
 
-Be aware about using complex validation inside the dtos, for that cases you could use Service Validation instead.
+Be aware about using complex validation inside the dtos, for that cases you could use validation in services instead.
 
-### Understanding Api.Net Architecture
+### 11. <a id="architecture"/> Understanding Api.Net Architecture
 
 To undertand how Api.Net works you must undertand the following diagram
 
@@ -381,3 +422,29 @@ In words it means
 * The data access logic (such as find, where, etc) must be in the repositories exposing a single entity.
 * The bussiness logic must be in the service, it use one or multiple repositories to process this logic and expose dtos to the controller.
 * The controller routes the data and manages one or more services to complete his work. They expose the serialized dto to the client.
+
+You could access to any of these components throw constructor service injection used in asp net core. By default, as you see, you just need to add the dto, all the other missing parts are provided by Api.Net as generic repositories, services and controllers. The next topics you'll know how to change these generics to specific ones.
+
+### 12. <a id="custom-repositories"/> Custom Repositories
+
+To change the generic repository attached with an entity, you must create a class and inherit from the `Repository` base class, and use the `ApiRepository` attribute as shown in `AuthorRepository.cs`
+```csharp
+[ApiRepository]
+    public class AuthorRepository : Repository<TestContext, Author>
+    {
+        public override Author Find(object key)
+        {
+            var author = base.Find(key);
+            author.Name = author.Name + " Intercepted";
+            return author;
+        }
+    }
+```
+ `GET /api/myblog/authors/2` 
+ will return  
+ ```json 
+
+ ```
+
+
+
