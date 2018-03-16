@@ -7,13 +7,18 @@ Api.Net is a simple implementation of web api using the Repository/Service/Dto p
 
 # Table of Contents
 1. [Getting Started](#get-started)
-2. [Configuration](#configuration)
-3. [Working With Dtos](#dtos)
+2. [Rest urls](#rest)
+3. [Configuration](#configuration)
+4. [Working With Dtos](#dtos)
+5. [Filtering Data](#filtering)
+5. [Ordering Data](#ordering)
+5. [Paginating Data](#pagination)
+5. [Showing/Hidding fields](#fields)
 
 
 
-### <a id="get-started" /> How do I get started? 
-##### 1. In your startup.cs add
+### 1. <a id="get-started" /> How do I get started? 
+##### a. In your startup.cs add
 ```csharp
 public class Startup
 {        
@@ -27,7 +32,7 @@ public class Startup
     }
 }
 ```
-##### 2. Create DbContext in TestContext.cs
+##### b. Create DbContext in TestContext.cs
 ```csharp
 public partial class TestContext : DbContext
 {
@@ -36,18 +41,18 @@ public partial class TestContext : DbContext
     public virtual DbSet<Author> Authors { get; set; }
 }
 ```
-##### 3. Create Dto in AuthorDto.cs as 
+##### c. Create Dto in AuthorDto.cs as 
 ```csharp
 public class AuthorDto : Dto<AuthorDto, Author>
 {
     public string Name { get; set; }
 }
 ```
-##### 4. Populate some data in database, then browse type /api/author 
+##### d. Populate some data in database, then browse type /api/author 
 ```json
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
-### Rest urls 
+### 2. <a id="rest" />  Rest urls 
 
 Api.Net creates the following endpoints for each dto:
 ```csharp
@@ -64,9 +69,8 @@ And they will return the following status codes
 * 400 //Bad Request
 * 500 //Internal Server Error
 ```
-
-### <a id="configuration" /> Configuration
-#### Changing default route prefix 
+### 3. <a id="configuration" />  Configuration
+#### a. Changing default route prefix 
 By default Api.Net use /api for all routes, to change this in Startup.cs
 ```csharp
 public class Startup
@@ -75,13 +79,14 @@ public class Startup
     {
         services.AddMvc().AddApi(opt => opt.RoutePrefix = "api/myblog");
     }  
+    ...
 }
 ```
 Now author endpoint will be in /api/myblog/author 
 ```json
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
-#### Changing endpoint name 
+#### b. Changing endpoint name 
 The convention to resolve the name of the endpoint is the class name without the suffix Dto. To change this behaviour just add the attribute ApiEndpoint in your AuthorDto.cs as
 ```csharp
 [ApiEndpoint("authors")]
@@ -95,8 +100,8 @@ And the result endpoint api/myblog/authors will bring
 {"count":1,"data":[{"name":"Josbel Luna"}]}
 ```
 
-### <a id="dtos" /> Working with Dtos
-#### Mapping dtos
+### 4. <a id="dtos" /> Working with Dtos
+#### a. Mapping dtos
 Api.Net mappings are entirely based on Autommaper. They allow us to create very complex mapping an conventions to facilitate our work. By convention all the properties in the dto will map the properties in the entity if they has the same name so for example:
 ```csharp
 public partial class Author
@@ -146,48 +151,48 @@ Will return
 ```json
 {"count": 1,"data": [{"id": 2,"name": "Josbel","lastName": "Luna","fullName": "Josbel Luna"}]}
 ```
-### Filtering and ordering and paginating data
+### 5. <a id="filtering" /> Filtering data
 Aumming `GET api/myblog/authors` returns the following data
 ```json
 {"count":3,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
 ```
 We could filter the data with:
-##### Equality
+##### a. Equality
 To find and exact value just write in the querystring the name of the field + = + the value you want to match like:
 
 `GET /api/myblog/authors?name=john`
 ```json
 {"count":1,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
 ```
-##### More or less
+##### b. More or less
 you could query this with the following statements
-`/api/myblog/authors?id>=2 //More than 2`
-`/api/myblog/authors?id>==2 //More or equal to 2`
-`/api/myblog/authors?id<=2 //Less than 2`
-`/api/myblog/authors?id<==2 //Less or equial to 2`
+* `/api/myblog/authors?id>=2 //More than 2`
+* `/api/myblog/authors?id>==2 //More or equal to 2`
+* `/api/myblog/authors?id<=2 //Less than 2`
+* `/api/myblog/authors?id<==2 //Less or equal to 2`
 
 `GET /api/myblog/authors?id>=2 //More than 2` will return
 ```json
 {"count":2,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
 ```
-#### Alternation (Or)
+#### c. Alternation (Or)
 Just separate the statements by `,` as follows:
 
 `GET /api/myblog/authors?id=2,6`
 ```json
 {"count":2,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
 ```
-#### Between
+#### d. Between
 Just separate the statements by `|` as follows:
 `GET /api/myblog/authors?id=1|5`
 ```json
 {"count":2,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
 ```
-#### Match Patterns
-* Use the `$` character as:
-`Value$$ //Start with value`
-`$$Value //End with value`
-`$Value$ //Contains value`
+#### e. Match Patterns
+- Use the `$` character as:
+* `Value$$ //Start with value`
+* `$$Value //End with value`
+* `$Value$ //Contains value`
 
 `GET /api/myblog/authors?fullName=John$$`
 ```json
@@ -201,13 +206,62 @@ Just separate the statements by `|` as follows:
 ```json
 {"count":2,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
 ```
-* Use the `*` character as space pattern:
-`fullName=*ValueA ValueB //Equivalent to fullname=$ValueA$&fullName=$ValueB$`
+- Use the `*` character as space pattern:
+* `fullName=*ValueA ValueB //Equivalent to fullname=$ValueA$&fullName=$ValueB$`
 
 `GET /api/myblog/authors?fullName=*Jo Lu`
 ```json
 {"count":1,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}]}
 ```
+#### f. Inner properties
+
+The next dto 
+```csharp
+[ApiEndpoint("articles")]
+public class ArticleDto : Dto<ArticleDto, Article>
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int AuthorId { get; set; }
+    public AuthorDto Author { get; set; }
+}
+```
+Will expose
+
+`GET /api/myblog/articles`
+```json
+{"count":3,"data":[
+ 
+{"id":2,"name":".Net Core 2.0 New Features","authorId":2,"author":{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}},
+
+{"id":3,"name":"Big data in 2018","authorId":2,"author":{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}},
+
+{"id":7,"name":"Managing concurrency in databases","authorId":5,"author":{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}}
+]}
+```
+The all filters explained before can be applied to inner properties just adding `.`  as for example
+
+`GET /api/myblog/articles?author.fullName=*John`
+```json
+{"count":1,"data":[{"id":7,"name":"Managing concurrency in databases","authorId":5,"author":{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}}]}
+```
+
+###6. <a id="ordering" Ordering Data /> 
+To select fields to order you must specified that in `orderdy` param as
+
+`Get /api/myblog/authors?orderby=name`
+```json
+{"count":3,"data":[{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}]}
+```
+
+and for decending order just add another param as `decending=true` as
+
+`Get /api/myblog/authors?orderby=name&descending=true`
+
+```json
+{"count":3,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
+```
+###7. <a id="paginating" Paginating Data /> 
 
 ### Events in the Dto
 Api.Net provide a serveral events in their Dto implementation, these events are:
