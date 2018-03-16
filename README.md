@@ -7,20 +7,20 @@ Api.Net is a simple implementation of web api using the Repository/Service/Dto p
 
 # Table of Contents
 1. [Getting Started](#get-started)
-2. [Rest urls](#rest)
+2. [Rest Urls](#rest)
 3. [Configuration](#configuration)
 4. [Working With Dtos](#dtos)
 5. [Filtering Data](#filtering)
 6. [Ordering Data](#ordering)
 7. [Paginating Data](#pagination)
-8. [Showing/Hidding fields](#fields)
-9. [Undertanding Api.Net architecture](#architecture)
+8. [Showing/Hidding Fields](#fields)
+9. [Undertanding Api.Net Architecture](#architecture)
 10. [Events](#events)
 11. [Validation](#validations)
 12. [Custom Repositories](#custom-repositories)
 13. [Custom Services](#custom-services)
 14. [Custom Controllers](#custom-controllers)
-15. [Working with dependency injection](#custom-controllers)
+15. [Working with Dependency Injection](#injection)
 
 
 
@@ -57,7 +57,13 @@ public class AuthorDto : Dto<AuthorDto, Author>
 ```
 ##### d. Populate some data in database, then browse type /api/author 
 ```json
-{"count":1,"data":[{"name":"Josbel Luna"}]}
+{
+    "count":1,
+    "data":
+    [
+        {"name":"Josbel Luna"}
+    ]
+}
 ```
 ### 2. <a id="rest" />  Rest urls 
 
@@ -91,7 +97,13 @@ public class Startup
 ```
 Now author endpoint will be in /api/myblog/author 
 ```json
-{"count":1,"data":[{"name":"Josbel Luna"}]}
+{
+    "count":1,
+    "data":
+    [
+        {"name":"Josbel Luna"}
+    ]
+}
 ```
 #### b. Changing endpoint name 
 The convention to resolve the name of the endpoint is the class name without the suffix Dto. To change this behaviour just add the attribute ApiEndpoint in your AuthorDto.cs as
@@ -104,7 +116,13 @@ public class AuthorDto : Dto<AuthorDto, Author>
 ```
 And the result endpoint api/myblog/authors will bring
 ```json
-{"count":1,"data":[{"name":"Josbel Luna"}]}
+{
+    "count":1,
+    "data":
+    [
+        {"name":"Josbel Luna"}
+    ]
+}
 ```
 
 ### 4. <a id="dtos" /> Working with Dtos
@@ -156,12 +174,26 @@ Making a the request:
 
 Will return 
 ```json
-{"count": 1,"data": [{"id": 2,"name": "Josbel","lastName": "Luna","fullName": "Josbel Luna"}]}
+{
+    "count": 1,
+    "data": 
+    [
+        {"id": 2,"name": "Josbel","lastName": "Luna","fullName": "Josbel Luna"}
+    ]
+}
 ```
 ### 5. <a id="filtering" /> Filtering data
 Aumming `GET api/myblog/authors` returns the following data
 ```json
-{"count":3,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
+{
+    "count":3,
+    "data":
+    [
+        {"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},
+        {"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},
+        {"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}
+    ]
+}
 ```
 We could filter the data with:
 ##### a. Equality
@@ -169,7 +201,13 @@ To find and exact value just write in the querystring the name of the field + = 
 
 `GET /api/myblog/authors?name=john`
 ```json
-{"count":1,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
+{
+    "count":1,
+    "data":
+    [
+        {"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}
+    ]
+}
 ```
 ##### b. More or less
 you could query this with the following statements
@@ -180,20 +218,41 @@ you could query this with the following statements
 
 `GET /api/myblog/authors?id>=2 //More than 2` will return
 ```json
-{"count":2,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
+{
+    "count":2,
+    "data":
+    [
+        {"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},
+        {"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}
+    ]
+}
 ```
 #### c. Alternation (Or)
 Just separate the statements by `,` as follows:
 
 `GET /api/myblog/authors?id=2,6`
 ```json
-{"count":2,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
+{
+    "count":2,
+    "data":
+    [
+        {"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},
+        {"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}
+    ]
+}
 ```
 #### d. Between
 Just separate the statements by `|` as follows:
 `GET /api/myblog/authors?id=1|5`
 ```json
-{"count":2,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
+{
+    "count":2,
+    "data":
+    [
+        {"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},
+        {"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}
+    ]
+}
 ```
 #### e. Match Patterns
 - Use the `$` character as:
@@ -203,22 +262,47 @@ Just separate the statements by `|` as follows:
 
 `GET /api/myblog/authors?fullName=John$$`
 ```json
-{"count":1,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
+{
+    "count":1,
+    "data":
+    [
+        {"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}
+    ]
+}
 ```
 `GET /api/myblog/authors?fullName=$$Luna`
 ```json
-{"count":1,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}]}
+{
+    "count":1,
+    "data":
+    [
+        {"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}
+    ]
+}
 ```
 `GET /api/myblog/authors?fullName=$John$`
 ```json
-{"count":2,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
+{
+    "count":2,
+    "data":
+    [
+        {"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},
+        {"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}
+    ]
+}
 ```
 - Use the `*` character as space pattern:
 * `fullName=*ValueA ValueB //Equivalent to fullname=$ValueA$&fullName=$ValueB$`
 
 `GET /api/myblog/authors?fullName=*Jo Lu`
 ```json
-{"count":1,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}]}
+{
+    "count":1,
+    "data":
+    [
+        {"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}
+    ]
+}
 ```
 #### f. Inner properties
 
@@ -237,14 +321,15 @@ Will expose
 
 `GET /api/myblog/articles`
 ```json
-{"count":3,"data":[
- 
-{"id":2,"name":".Net Core 2.0 New Features","authorId":2,"author":{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}},
-
-{"id":3,"name":"Big data in 2018","authorId":2,"author":{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}},
-
-{"id":7,"name":"Managing concurrency in databases","authorId":5,"author":{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}}
-]}
+{
+    "count":3,
+    "data":
+    [
+        {"id":2,"name":".Net Core 2.0 New Features","authorId":2,"author":{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}},
+        {"id":3,"name":"Big data in 2018","authorId":2,"author":{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}},
+        {"id":7,"name":"Managing concurrency in databases","authorId":5,"author":{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}}
+    ]
+}
 ```
 The all filters explained before can be applied to inner properties just adding `.`  as for example
 
@@ -258,7 +343,15 @@ To select fields to order you must specified that in `orderdy` param as
 
 `Get /api/myblog/authors?orderby=name`
 ```json
-{"count":3,"data":[{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}]}
+{
+    "count":3,
+    "data":
+    [
+        {"id":6, "name":"Carl", "lastName":"Johnson", "fullName":"Carl Johnson"},
+        {"id":5, "name":"John", "lastName":"Doe", "fullName":"John Doe"},
+        {"id":2, "name":"Josbel", "lastName":"Luna", "fullName":"Josbel Luna"}
+    ]
+}
 ```
 
 and for decending order just add another param as `decending=true` as
@@ -266,7 +359,15 @@ and for decending order just add another param as `decending=true` as
 `Get /api/myblog/authors?orderby=name&descending=true`
 
 ```json
-{"count":3,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"},{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},{"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}]}
+{
+    "count":3,
+    "data":
+    [
+        {"id":2, "name":"Josbel", "lastName":"Luna", "fullName":"Josbel Luna"},
+        {"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"},
+        {"id":6,"name":"Carl","lastName":"Johnson","fullName":"Carl Johnson"}
+    ]
+}
 ```
 ### 7. <a id="paginating"/> Paginating Data 
 Api.Net provides a pagination mechanism by just adding two params `page` and `pagesize`, by default the page is always `1` and pagesize is `0` witch means all. making a request to the next endpoint
@@ -274,14 +375,26 @@ Api.Net provides a pagination mechanism by just adding two params `page` and `pa
 `GET /api/myblog/authors?pagesize=1`
 will return
 ```json
-{"count":3,"data":[{"id":2,"name":"Josbel","lastName":"Luna","fullName":"Josbel Luna"}]}
+{
+    "count":3,
+    "data":
+    [
+        {"id":2,"name":"Josbel", "lastName":"Luna", "fullName":"Josbel Luna"}
+    ]
+}
 ```
 Notice at the count metadata attribute, it shows `3` meaning you are not filtering the data but paginating it, to access to the next page just make
 
 `GET /api/myblog/authors?pagesize=1&page=2`
 will return
 ```json
-{"count":3,"data":[{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}]}
+{
+    "count":3,
+    "data":
+    [
+        {"id":5,"name":"John", "lastName":"Doe", "fullName":"John Doe"}
+    ]
+}
 ```
 And you could continue doing the same until consuming all the data.
 ### 8. <a id="fields"/> Showing/Hinding fields
@@ -292,7 +405,15 @@ You could create another dto with the 2 properties but for that you have to make
 `GET /api/myblog/authors?fields=id,name`
 
 ```json
-{"count":3,"data":[{"id":2,"name":"Josbel"},{"id":5,"name":"John"},{"id":6,"name":"Carl"}]}
+{
+    "count":3,
+    "data":
+    [
+        {"id":2,"name":"Josbel"},
+        {"id":5,"name":"John"},
+        {"id":6,"name":"Carl"}
+    ]
+}
 ```
 
 This aims to reduce the resources you consuming sending/receiving and storing data and the consult to the database is impacted too reducing the fields you're selecting. This provides to you a safe endpoint to avoid consults getting slowed when you increment the properties used in the dto.
@@ -301,7 +422,15 @@ You could hide instead show fields by use the `exclude` param
 
 `GET /api/myblog/authors?exclude=name,lastname`
 ```json
-{"count":3,"data":[{"id":2,"fullName":"Josbel Luna"},{"id":5,"fullName":"John Doe"},{"id":6,"fullName":"Carl Johnson"}]}
+{
+    "count":3,
+    "data":
+    [
+        {"id":2,"fullName":"Josbel Luna"},
+        {"id":5,"fullName":"John Doe"},
+        {"id":6,"fullName":"Carl Johnson"}
+    ]
+}
 ```
 ### 9. <a id="events"/> Events in the Dto
 Api.Net provide a serveral events in their Dto implementation, these events are:
@@ -427,24 +556,151 @@ You could access to any of these components throw constructor service injection 
 
 ### 12. <a id="custom-repositories"/> Custom Repositories
 
-To change the generic repository attached with an entity, you must create a class and inherit from the `Repository` base class, and use the `ApiRepository` attribute as shown in `AuthorRepository.cs`
+To change the generic repository attached with an entity, you must create a class and inherit from the `Repository` base class, and use the `[ApiRepository]` attribute as shown in `AuthorRepository.cs`
 ```csharp
 [ApiRepository]
-    public class AuthorRepository : Repository<TestContext, Author>
+public class AuthorRepository : Repository<TestContext, Author>
+{
+    public override Author Find(object key)
     {
-        public override Author Find(object key)
-        {
-            var author = base.Find(key);
-            author.Name = author.Name + " Intercepted";
-            return author;
-        }
+        var author = base.Find(key);
+        author.Name +=  " Intercepted by Repository";
+        return author;
     }
+}
 ```
  `GET /api/myblog/authors/2` 
  will return  
  ```json 
+{
+"id": 2,
+"name": "Josbel Intercepted by Repository",
+"lastName": "Luna",
+"fullName": "Josbel Intercepted by Repository Luna"
+}
+ ```
+Another way to override the generic repository is using the interface   `IRepository` instead of the base class, for example:
+```csharp
+[ApiRepository]
+public class AuthorRepository : IRepository<Author>{
+    ...
+}
+```
+In this case you have to provide the implementation of the interface manually.
 
+### 13. <a id="custom-services"/> Custom Services
+The same way as repositories, services can be overrided using `Service` base class and using `[ApiService]` attribute
+``` csharp
+[ApiService]
+public class AuthorService : Service<AuthorDto, Author>
+{
+    public AuthorService(IRepository<Author> repository) : base(repository)
+    {
+    }
+
+    public override AuthorDto Find(object key)
+    {
+        var dto = base.Find(key);
+        dto.LastName += " Intercepted by Service";
+        return dto;
+    }
+}
+```
+Notice you have to inject the repository by controller, this IRepository interface is the generic Repository supplied by the Api or a custom repository as we shown in the last example.
+
+ `GET /api/myblog/authors/2` 
+ will return  
+ ```json 
+{
+"id": 2,
+"name": "Josbel Intercepted by Repository",
+"lastName": "Luna Intercepted by Service",
+"fullName": "Josbel Intercepted by Repository Luna"
+}
+ ```
+As the repositories you could use `IService<>` interface instead the class getting the same result.
+### 14. <a id="custom-controllers"/> Custom Controllers
+To use a custom controller just inherit from ApiController class as follows:
+
+```csharp
+[Route("api/[controller]")]
+public class AuthorsController : ApiController<AuthorDto>
+{
+    public override IActionResult Find(int id)
+    {
+        var author = Service.Find(id);
+        author.FullName += " Intercepted by Controller";
+        return Ok(author);
+    }
+}
+```
+`GET /api/authors` will return
+```json
+{
+"id": 2,
+"name": "Josbel Intercepted by Repository",
+"lastName": "Luna Intercepted by Service",
+"fullName": "Josbel Intercepted by Repository Luna Intercepted by Controller"
+}
+```
+### 15. <a id="injection"/> Working with Dependency Injection
+As we see last time we have  some constructor dependency injection like this
+```csharp
+ public AuthorService(IRepository<Author> repository)
  ```
 
+ Api.Net Configure all the interfaces as scoped services if they have an `ApiService` or `ApiRepository` attribute on the implementation. Based on that you could use these attributes to inject some other services you want to use, be or not a Dto service.
 
+ For example we have 
+```csharp
+[ApiService]
+public class StringService : IStringService
+{
+    public string Capitalize(string word)
+    {
+        if (string.IsNullOrEmpty(word)) return word;
+        return char.ToUpper(word[0]) + word.Substring(1).ToLower();
+    }
+}
+```
+and 
+```csharp
+public interface IStringService
+{
+    string Capitalize(string word);
+}
+```
 
+you could use this Istringservice into a controller, service or repository by just injected by constructor as the following example:
+```csharp
+[Route("api/[controller]")]
+public class AuthorsController : ApiController<AuthorDto>
+{
+    private readonly IStringService _stringService;
+
+    public AuthorsController(IStringService stringService)
+    {
+        _stringService = stringService;
+    }
+
+    public override IActionResult Find(int id)
+    {
+        var author = Service.Find(id);
+        author.FullName += " Intercepted by Controller";
+
+        author.Name = _stringService.Capitalize(author.Name);
+        author.LastName = _stringService.Capitalize(author.LastName);
+        author.FullName = _stringService.Capitalize(author.FullName);
+        return Ok(author);
+    }
+}
+```
+`GET /api/authors/2` now returns
+```json
+{
+"id": 2,
+"name": "Josbel intercepted by repository",
+"lastName": "Luna intercepted by service",
+"fullName": "Josbel intercepted by repository luna intercepted by controller"
+}
+```
