@@ -31,7 +31,10 @@ public class Startup
 {        
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMvc().AddApi();
+        services.AddMvc().AddApi(opt =>
+            {
+                opt.ContextOption = (config, connectionstring) => config.UseSqlServer(connectionstring);
+            });
     }
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
@@ -90,7 +93,10 @@ public class Startup
 {        
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMvc().AddApi(opt => opt.RoutePrefix = "api/myblog");
+        services.AddMvc().AddApi(opt => {
+            opt.ContextOption = (config, connectionstring) => config.UseSqlServer(connectionstring);
+            opt.RoutePrefix = "api/myblog"
+        });
     }  
     ...
 }
