@@ -4,23 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using Api.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Api.Repositories
 {
-    public class Repository<TContext, TEntity> : IRepository<TEntity> where TEntity : class where TContext : DbContext, new()
+    public class Repository<TContext, TEntity> : IRepository<TEntity> where TEntity : class where TContext : DbContext
     {
-        private TContext _db;
-        public TContext Context
+        public TContext Context { get; }
+        public Repository(TContext context)
         {
-            get
-            {
-                _db = _db ?? new TContext();
-                _db.Configuration.AutoDetectChangesEnabled = false;
-                return _db;
-            }
+            Context = context;
         }
 
         public IQueryable<TEntity> Entities => GetEntities();
@@ -30,18 +25,16 @@ namespace Api.Repositories
             return this.Context.Set<TEntity>().AsNoTracking();
         }
 
-        public virtual TEntity Find(object key, bool detach = false)
+        public virtual TEntity Find(object key)
         {
             var entity = this.Context.Set<TEntity>().Find(key);
-            if (detach) _db.Entry(entity).State = EntityState.Detached;
             return entity;
         }
-        public virtual void Add(TEntity entity, bool save = true)
+        public virtual void Add(TEntity entity)
         {
             this.AttachProperties(entity);
             this.Context.Set<TEntity>().Add(entity);
-
-            if (save) SaveChanges();
+            SaveChanges();
         }
 
         public virtual void AddRange(IEnumerable<TEntity> entities)
@@ -49,10 +42,10 @@ namespace Api.Repositories
             this.Context.Set<TEntity>().AddRange(entities);
             SaveChanges();
         }
-        public virtual void Update(TEntity entity, bool save = true)
+        public virtual void Update(TEntity entity)
         {
-            this.GetEntry(entity).State = EntityState.Modified;
-            if (save) SaveChanges();
+            this.Context.Entry(entity).State = EntityState.Modified;
+            SaveChanges();
         }
         public void UpdateRange(IEnumerable<TEntity> entities)
         {
@@ -69,11 +62,11 @@ namespace Api.Repositories
             this.Context.Set<TEntity>().Remove(entity);
             SaveChanges();
         }
-        public virtual void Delete(TEntity entity, bool save = true)
+        public virtual void Delete(TEntity entity)
         {
             this.Attach(entity, EntityState.Deleted);
 
-            if (save) this.SaveChanges();
+            this.SaveChanges();
         }
 
         public TEntity Delete(int id, string user = "SYSTEM")
@@ -81,23 +74,24 @@ namespace Api.Repositories
             var _obj = Find(id);
             var type = _obj.GetType();
 
-            type.GetProperty("Estado")?.SetValue(_obj, false);
-            type.GetProperty("FechaModificacion")?.SetValue(_obj, DateTime.Now);
-            type.GetProperty("ModificadoPor")?.SetValue(_obj, user);
+            var active = type.GetProperty("Active");
 
-            var version = type.GetProperty("Version");
-            version?.SetValue(_obj, ((int)version.GetValue(_obj)) + 1);
-            Update(_obj);
+            if (active != null)
+            {
+                active.SetValue(_obj, false);
+                Update(_obj);
+                return _obj;
+            }
+            Delete(_obj);
             return _obj;
         }
 
         public virtual void SaveChanges()
         {
             this.Context.SaveChanges();
-            DetachAll();
         }
 
-        public virtual DbEntityEntry GetEntry(TEntity entity)
+        public virtual EntityEntry GetEntry(TEntity entity)
         {
             var entry = this.Context.ChangeTracker.Entries<TEntity>().FirstOrDefault(t => t.Entity.Equals(entity));
 
@@ -131,7 +125,7 @@ namespace Api.Repositories
         public virtual void DetachAll()
         {
 
-            foreach (DbEntityEntry dbEntityEntry in this.Context.ChangeTracker.Entries())
+            foreach (EntityEntry dbEntityEntry in this.Context.ChangeTracker.Entries())
             {
 
                 if (dbEntityEntry.Entity != null)
@@ -145,20 +139,7 @@ namespace Api.Repositories
 
         public void Dispose()
         {
-            Dispose(true);
+            Context.Dispose();
         }
-        private void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                if (disposing)
-                {
-                    _db?.Dispose();
-                    _db = null;
-                }
-                _isDisposed = false;
-            }
-        }
-
-    }    
+    }
 }

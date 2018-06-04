@@ -11,6 +11,9 @@ using Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Api.Routing;
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Api.Net.Core.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Builder
 {
@@ -66,6 +69,7 @@ namespace Api.Builder
         {
             var apiServices = MapperUtils.GetApiServices();
             Services.AddScoped<IListService, ListService>();
+            Services.AddSingleton<IRelationalDtoService, RelationalDtoService>();
             InjectInterfaces(Services, apiServices);
             return this;
         }
@@ -84,6 +88,21 @@ namespace Api.Builder
                 if (Services.Any(t => t.ServiceType == @interface)) continue;
                 Services.AddScoped(@interface, typeof(Repository<,>).MakeGenericType(contextEntity.DbContextType, contextEntity.EntityType));
             }
+            return this;
+        }
+        public ApiBuilder AddDbContexts()
+        {
+            if (Options.ContextOption == null) return this;
+            var contexts = MapperUtils.GetAllContext();
+            foreach (var context in contexts)
+            {
+                var builder = new DbContextOptionsBuilder();
+                Services.AddScoped(context, p =>
+                  {
+                      return Activator.CreateInstance(context, Options.ContextOption(builder, p.GetService<IConfiguration>().GetConnectionString(context.Name)).Options);
+                  });
+            }
+
             return this;
         }
         public IServiceCollection AddGeneric<TDto, TEntity>(IServiceCollection services) where TDto : class where TEntity : class

@@ -10,6 +10,8 @@ namespace Api.Services
     public interface IService<TDto> : IDisposable
     {
         IQueryable<TDto> Dto { get; }
+        IQueryable<TDto> GetDto(params string[] membersToExpand);
+
         TDto Find(object key);
 
         TDto Add(TDto dto);

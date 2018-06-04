@@ -1,13 +1,13 @@
 ﻿using Api;
+using Api.Attributes;
 using Api.Enums;
 using Api.Resolvers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
-using System.Linq.Dynamic;
+using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -24,9 +24,7 @@ namespace Api.Utils
                 var value = filters[key];
                 string predicate = GetPredicate<TEntity>(key, value.ToString());
                 if (predicate == null) continue;
-
-                var expression = DynamicExpression.ParseLambda<TEntity, bool>(predicate);
-                list = list.Where(expression);
+                list = list.Where(predicate);
             }
             return list;
         }
@@ -55,74 +53,101 @@ namespace Api.Utils
 
             return list.Take(pageSize.Value);
         }
-        public static IEnumerable Select<TEntity>(this IEnumerable<TEntity> list, IEnumerable<string> fields = null)
+        public static IQueryable Select<TEntity>(this IQueryable<TEntity> list, IEnumerable<string> selections, IEnumerable<string> exclusions, IEnumerable<string> expansions)
         {
             var dtoProperties = typeof(TEntity).GetTypeInfo().DeclaredProperties.Select(t => t.Name);
-            if (fields == null) return list;
-            var propertyNames = new List<string>();
-            foreach (var field in fields)
-            {
-                Type type;
-                var propertyName = GetPropertyName<TEntity>(field, out type);
-                if (propertyName == null) continue;
-                propertyNames.Add(propertyName);
-            }
-            if (!propertyNames.Any()) return list;
+            var propertySet = new HashSet<string>();
 
-            propertyNames = propertyNames.Select(t => t + " AS " + t.Replace(".", "")).ToList();
+            AddSelections<TEntity>(propertySet, selections);
+            AddExclusions<TEntity>(propertySet, exclusions);
+            AddExpansions<TEntity>(propertySet, expansions);
+            var propertyNames = propertySet.Select(t => t + " AS " + t.Replace(".", ""));
             string query = string.Join(",", propertyNames);
             query = string.Format("new({0})", query);
             return list.Select(query);
         }
-        public static IEnumerable Exclude<TEntity>(this IEnumerable list, IEnumerable<string> fields = null)
+
+        private static void AddSelections<TEntity>(HashSet<string> propertyNames, IEnumerable<string> selections)
         {
-            if (fields == null) return list;
-            var dtoProperties = typeof(TEntity).GetProperties().Select(t => t.Name);
+            var props = typeof(TEntity).GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                                           .Where(p => !p.IsDefined(typeof(ExpandableAttribute), true)).Select(t => t.Name);
 
-            fields = fields.Select(t => t.ToLower());
-            var diferentProperties = dtoProperties.Where(t => !fields.Contains(t.ToLower()));
+            if (!selections.Any()) { foreach (var prop in props) propertyNames.Add(prop); return; }
 
-            string query = string.Join(",", diferentProperties);
-            query = string.Format("new({0})", query);
-            return list.Select(query);
+            Parallel.ForEach(selections, (name) =>
+            {
+                var prop = props.FirstOrDefault(t => t.Equals(name, StringComparison.OrdinalIgnoreCase));
+                if (prop != null) propertyNames.Add(prop);
+            });
         }
+        private static void AddExclusions<TEntity>(HashSet<string> propertyNames, IEnumerable<string> exclusions)
+        {
+            if (!exclusions.Any()) return;
+
+            Parallel.ForEach(exclusions, (name) =>
+            {
+                var prop = GetPropertyName<TEntity>(name, out _, out _);
+                if (prop != null) propertyNames.Remove(prop);
+            });
+        }
+        private static void AddExpansions<TEntity>(HashSet<string> propertyNames, IEnumerable<string> expansions)
+        {
+            Parallel.ForEach(expansions, (name) =>
+            {
+                var prop = GetPropertyName<TEntity>(name, out _, out _);
+                if (prop != null) propertyNames.Add(prop);
+            });
+        }
+
         public static string GetPredicate<TEntity>(string filter, string value)
         {
             Type type;
             string sign = SignUtils.ExtractSign(ref filter, ref value);
 
-            var propertyName = GetPropertyName<TEntity>(filter, out type);
+            var propertyName = GetPropertyName<TEntity>(filter, out type, out var isGeneric);
             if (propertyName == null) return null;
             if (type.IsGenericType) type = type.GetGenericArguments()[0];
-            return GetPredicate(type, propertyName, value, sign);
+            return GetPredicate(type, propertyName, value, sign, isGeneric);
         }
-        private static string GetPropertyName<TEntity>(string name, out Type type)
+        public static string GetPropertyName<TEntity>(string name, out Type type, out bool isGeneric)
         {
             type = typeof(TEntity);
+            isGeneric = false;
             var keys = name.ToLower().Split('.');
             var names = new List<string>();
 
             foreach (var key in keys)
             {
-                var property = type.GetProperties().FirstOrDefault(t => t.Name.ToLower().Equals(key));
+                var property = type.GetProperty(key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                 if (property == null) return null;
 
                 names.Add(property.Name);
                 type = property.PropertyType;
+                if (type.IsGenericType)
+                {
+                    type = type.GetGenericArguments()[0];
+                    isGeneric = true;
+                }
             }
 
             return string.Join(".", names);
         }
 
-        private static string GetPredicate(Type propertyType, string propertyName, object values, string sign)
+        private static string GetPredicate(Type propertyType, string propertyName, object values, string sign, bool isGeneric)
         {
             IEnumerable<string> valueArray = values.ToString().Split(',');
+            var listParameter = "";
+            if (isGeneric)
+            {
+                var part = propertyName.Split('.');
+                listParameter = part.First();
+                propertyName = propertyName.Replace($"{listParameter}.", "");
+            }
             var predicates = new List<string>();
             foreach (var value in valueArray)
             {
                 var _value = value;
                 var format = "";
-
                 if (propertyType == typeof(string))
                 {
                     var resolver = new StringPredicateResolver();
@@ -147,6 +172,9 @@ namespace Api.Utils
                         format = $"{{0}}{sign}{{1}}";
                     }
                 }
+                if (isGeneric)
+                    format = $"{listParameter}.Any({format})";
+
                 predicates.Add(string.Format(format, propertyName, _value));
             }
             return string.Join(SignUtils.ResolveJoinSign(sign), predicates);

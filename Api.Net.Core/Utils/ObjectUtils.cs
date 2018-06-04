@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,34 +19,10 @@ namespace Api.Utils
                 if (property.GetValue(obj) == null) property.SetValue(obj, string.Empty);
             }
             return obj;
-        }
-
+        }   
         public static string GetInnerMessages(this Exception ex)
         {
-            StringBuilder messages = new StringBuilder();
-            messages.AppendLine(ex.Message);
-            Exception _innerExcepcion = ex.InnerException;
-
-            if (ex is DbEntityValidationException)
-            {
-                DbEntityValidationException dbEx = (DbEntityValidationException)ex;
-
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        string message = $"{validationErrors.Entry.Entity}:{validationError.ErrorMessage}";
-                        messages.AppendLine(message);
-                    }
-            }
-            else
-            {
-              while (_innerExcepcion != null)
-                {
-                    messages.AppendLine(_innerExcepcion.Message);
-                    _innerExcepcion = _innerExcepcion.InnerException;
-                }
-            }
-            return messages.ToString();
+            return ex.Message; //For Now
         }
     }
 }

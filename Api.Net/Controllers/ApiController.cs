@@ -16,11 +16,11 @@ namespace Api.Controllers
     [ApiControllerModelConvention]
     public class ApiController<TDto> : Controller where TDto : class
     {
-        public string ApplicationUser => Request.Headers["ApplicationUser"];    
+        public string ApplicationUser => Request.Headers["ApplicationUser"];
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
-            Service =  HttpContext.RequestServices.GetService<IService<TDto>>();
+            Service = HttpContext.RequestServices.GetService<IService<TDto>>();
             ListService = HttpContext.RequestServices.GetService<IListService>();
         }
         protected IService<TDto> Service { get; set; }
@@ -28,7 +28,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
-        public virtual IActionResult Ver(int id)
+        public virtual IActionResult Find(int id)
         {
             try
             {
@@ -54,10 +54,9 @@ namespace Api.Controllers
         {
             try
             {
-                var servicioList = Service.Dto;
                 var parameters = parameter.ProcessParameters(Request.Query);
                 parameters.Filters.Add("Estado", true);
-                var list = ListService.GetList(servicioList, parameters);
+                var list = ListService.GetList(Service, parameters);
                 return Ok(list);
             }
             catch (Exception ex)
@@ -122,23 +121,24 @@ namespace Api.Controllers
 
         [HttpPatch]
         [Route("{id:int}")]
-        public virtual IActionResult PartialUpdate(int id, [FromBody] JsonPatchDocument<TDto> patch)
+        public virtual IActionResult PartialUpdate(int id, [FromBody] object changes)
         {
             try
             {
-                var _obj = Service.Find(id);
-                patch.ApplyTo(_obj);
+                var dto = Service.Find(id);
+                var patch = changes.ToJsonPatchDocument();
+                patch.ApplyTo(dto);
 
-                var type = _obj.GetType();
+                var type = dto.GetType();
 
-                type.GetProperty("FechaModificacion")?.SetValue(_obj, DateTime.Now);
-                type.GetProperty("ModificadoPor")?.SetValue(_obj, ApplicationUser);
+                type.GetProperty("FechaModificacion")?.SetValue(dto, DateTime.Now);
+                type.GetProperty("ModificadoPor")?.SetValue(dto, ApplicationUser);
 
                 var version = type.GetProperty("Version");
-                version?.SetValue(_obj, ((int)version.GetValue(_obj)) + 1);
+                version?.SetValue(dto, ((int)version.GetValue(dto)) + 1);
 
-                Service.Update(_obj);
-                return Ok(_obj);
+                Service.PartialUpdate(id, dto);
+                return Ok(dto);
             }
             catch (ValidateException ex)
             {

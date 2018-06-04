@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -8,10 +7,11 @@ using Api.Repositories;
 using Api.Utils;
 using Api.Models;
 using System.Collections.Generic;
+using Api.Dto.Base;
 
 namespace Api.Services
 {
-    public class Service<TDto, TEntity> : IService<TDto, TEntity> where TEntity : class where TDto : class
+    public class Service<TDto, TEntity> : IService<TDto> where TEntity : class where TDto : class
     {
         private IRepository<TEntity> repository;
 
@@ -33,7 +33,10 @@ namespace Api.Services
         {
             return this.Repository.Entities.ProjectTo<TDto>();
         }
-
+        public virtual IQueryable<TDto> GetDto(params string[] membersToExpand)
+        {
+            return this.Repository.Entities.ProjectTo<TDto>(null, membersToExpand);
+        }
         public virtual TDto Find(object key)
         {
             var entity = this.Repository.Find(key);
@@ -111,7 +114,7 @@ namespace Api.Services
             Repository.SaveChanges();
         }
         public virtual TDto Update(TDto dto)
-        {         
+        {
             var dtoEventHandler = dto as IDtoEvent<TDto>;
             if (dtoEventHandler != null)
             {
@@ -119,8 +122,6 @@ namespace Api.Services
                 dtoEventHandler.BeforeUpdate(dto);
 
             }
-            this.Repository.DetachAll();
-
             var errors = new Error();
             var dtoValidator = dto as IDtoValidator<TDto>;
             if (dtoValidator != null)
@@ -146,7 +147,6 @@ namespace Api.Services
         }
         public virtual TDto PartialUpdate(object id, TDto dto)
         {
-            this.Repository.DetachAll();
             var dtoEventHandler = dto as IDtoEvent<TDto>;
             if (dtoEventHandler != null)
             {

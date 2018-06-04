@@ -5,11 +5,11 @@ using Api.Dto.Base;
 using Api.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Utils
 {
@@ -28,11 +28,10 @@ namespace Api.Utils
                     var genericArguments = genericBackArguments.Reverse().ToArray();
                     if (genericArguments.Length < 2) continue;
 
-                    //var map = mapper.CreateMap(genericArguments[1], genericArguments[0]);
                     var createMaps = mapper.GetType().GetMethods().First(t => t.Name == "CreateMap" && t.IsGenericMethod);
-
                     var map = createMaps.MakeGenericMethod(genericArguments).Invoke(mapper, null);
                     var mapConfig = Activator.CreateInstance(typeof(Maps<,>).MakeGenericType(genericBackArguments), map);
+                    type.GetMethod(nameof(IDto<object, object>.MapExpandables)).Invoke(dto, new[] { mapConfig });
                     type.GetMethod(nameof(IDto<object, object>.Map)).Invoke(dto, new[] { mapConfig });
 
 
@@ -42,6 +41,7 @@ namespace Api.Utils
                 }
             }
         }
+
         public static IEnumerable<Type> GetAllDtos()
         {
 
@@ -65,6 +65,13 @@ namespace Api.Utils
                     yield return new ContextEntities { DbContextType = context, EntityType = entity };
             }
         }
+        public static IEnumerable<Type> GetAllContext()
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            var contexts = assemblies.SelectMany(t => t.DefinedTypes).Where(t => !t.IsAbstract && typeof(DbContext).IsAssignableFrom(t));
+            return contexts;
+        }
         public static IEnumerable<Type> GetApiRepositories()
         {
             var types = GetAssemblies().SelectMany(t => t.DefinedTypes)
@@ -81,7 +88,7 @@ namespace Api.Utils
         {
             var currentAssembly = Assembly.GetEntryAssembly();
             var assemblies = currentAssembly.GetReferencedAssemblies().Select(t => Assembly.Load(t)).ToList();
-                assemblies.Add(currentAssembly);
+            assemblies.Add(currentAssembly);
             return assemblies;
         }
     }

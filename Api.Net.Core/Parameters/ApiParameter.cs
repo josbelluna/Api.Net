@@ -13,5 +13,6 @@ namespace Api.Parameters
         public string Fields { get; set; }
         public string Exclude { get; set; }
         public bool Descending { get; set; }
+        public string Expand { get; set; }
     }
 }

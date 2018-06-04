@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,7 +18,7 @@ namespace Api.Utils
             var selectedSign = "=";
 
             var match = _signs.FirstOrDefault(t => _key.EndsWith(t) || _value.StartsWith(t));
-            if (match == null) return selectedSign;
+            if (match == null) return selectedSign.ResolveSign();
 
             key = key.Replace(match, "");
             value = value.Replace(match, "");
@@ -34,6 +33,8 @@ namespace Api.Utils
                 {
                 case "!":
                     return "!=";
+                case "=":
+                    return "==";
                 default:
                     return sign;
                 }
