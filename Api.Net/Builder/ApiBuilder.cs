@@ -14,6 +14,10 @@ using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Api.Net.Core.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using Api.Attributes;
+using Api.Net.Core.Metatada;
+using Api.Net.Core.Models;
 
 namespace Api.Builder
 {
@@ -40,13 +44,33 @@ namespace Api.Builder
         }
         public ApiBuilder AddDtoMaps()
         {
-
             Mapper.Initialize(c =>
             {
                 c.ResolveDtoMaps();
             });
+            ResolveDtoProjections();
             return this;
         }
+
+        private void ResolveDtoProjections()
+        {
+            var dtos = MapperUtils.GetAllDtos();
+            foreach (var dto in dtos)
+            {
+                var projections = dto.GetInterfaces()
+                 .Select(t =>
+                 new ProjectionDefinition
+                 {
+                     ProjectionType = t,
+                     Name = t.GetCustomAttribute<DtoProjectionAttribute>()?.ProjectionName,
+                     ProjectionProperties = t.GetProperties().Select(p => p.Name)
+                 })
+                 .Where(t => t.Name != null);
+                if (!projections.Any()) continue;
+                DtoMetadata.Instance.Projections.Add(dto, projections);
+            }
+        }
+
         public ApiBuilder AddDtoServices()
         {
             var dtos = MapperUtils.GetAllDtos();

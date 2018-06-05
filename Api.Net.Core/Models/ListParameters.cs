@@ -8,6 +8,7 @@ namespace Api.Models
         public IEnumerable<string> Selections { get; set; }
         public IEnumerable<string> Exclusions { get; set; }
         public IEnumerable<string> Expansions { get; set; }
+        public string Projection { get; set; }
         public IEnumerable<string> Orders { get; set; }
         public bool Descending { get; set; }
         public int? CurrentPage { get; set; }

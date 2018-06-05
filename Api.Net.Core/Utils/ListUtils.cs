@@ -55,7 +55,6 @@ namespace Api.Utils
         }
         public static IQueryable Select<TEntity>(this IQueryable<TEntity> list, IEnumerable<string> selections, IEnumerable<string> exclusions, IEnumerable<string> expansions)
         {
-            var dtoProperties = typeof(TEntity).GetTypeInfo().DeclaredProperties.Select(t => t.Name);
             var propertySet = new HashSet<string>();
 
             AddSelections<TEntity>(propertySet, selections);

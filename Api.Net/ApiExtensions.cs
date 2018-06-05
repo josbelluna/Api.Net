@@ -23,9 +23,7 @@ namespace Api
             var options = new ApiOptions();
             config?.Invoke(options);
             var builder = new ApiBuilder(mvcBuilder, options);
-            builder
-                .AddDbContexts()
-                .AddApiRepositories().AddEntitiesRepositories().AddDtoMaps().AddApiServices().AddDtoServices().AddControllers();
+            builder.AddDbContexts().AddApiRepositories().AddEntitiesRepositories().AddDtoMaps().AddApiServices().AddDtoServices().AddControllers();
             mvcBuilder.AddJsonOptions(opt =>
             {
                 opt.SerializerSettings.ContractResolver =

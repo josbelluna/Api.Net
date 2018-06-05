@@ -19,10 +19,10 @@ namespace Api.Services
         TDto Update(TDto dto);
         TDto PartialUpdate(object id, TDto dto);
 
-        void ValidateDto(TDto dto, Error errors);
-        void ValidateAdd(TDto dto, Error errors);
-        void ValidateUpdate(TDto dto, Error errors);
-        void ValidateDelete(int id, Error errors);
+        void ValidateDto(Validator<TDto> validator);
+        void ValidateAdd(Validator<TDto> validator);
+        void ValidateUpdate(Validator<TDto> validator);
+        void ValidateDelete(int id, Validator validator);
 
 
         void Activate(TDto dto);

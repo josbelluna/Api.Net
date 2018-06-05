@@ -28,6 +28,7 @@ namespace Api.Utils
                 Descending = apiParameters.Descending,
                 PageSize = apiParameters.PageSize,
                 CurrentPage = apiParameters.Page,
+                Projection = apiParameters.Project,
                 Selections = apiParameters.Fields?.Split(',') ?? new string[0],
                 Exclusions = apiParameters.Exclude?.Split(',') ?? new string[0],
                 Expansions = apiParameters.Expand?.Split(',') ?? new string[0]

@@ -6,6 +6,7 @@ using Api.Enums;
 using System.Reflection;
 using System;
 using System.Collections.Generic;
+using Api.Net.Core.Metatada;
 
 namespace Api.Services
 {
@@ -14,6 +15,7 @@ namespace Api.Services
         public ListResult GetList<TDto>(IService<TDto> service, ListParameters parameters)
         {
             var entities = parameters.Expansions.Any() ? service.GetDto(ResolveExpansions<TDto>(parameters.Expansions)) : service.Dto;
+
             //Filter
             var filters = parameters.Filters;
             entities = entities.Filter(filters);
@@ -26,11 +28,12 @@ namespace Api.Services
             //Paginate
             entities = entities.Paginate(parameters.CurrentPage, parameters.PageSize);
 
-            //Select
-            var selection = parameters.Selections;
-            var exclusion = parameters.Exclusions;
-            var expansion = parameters.Expansions;
-            var data = entities.Select(selection, exclusion, expansion);
+            //Select        
+            var fields = ResolveProjectionProperties(typeof(TDto), parameters.Projection);
+
+            parameters.Selections = fields.Any() ? fields : parameters.Selections;
+
+            var data = entities.Select(parameters.Selections, parameters.Exclusions, parameters.Expansions);
 
             var result = new ListResult
             {
@@ -39,6 +42,12 @@ namespace Api.Services
             };
 
             return result;
+        }
+
+        private IEnumerable<string> ResolveProjectionProperties(Type type, string projection)
+        {
+            var p = DtoMetadata.Instance.ResolveProyection(type, projection);
+            return p != null ? p.ProjectionProperties : new string[] { };
         }
 
         private string[] ResolveExpansions<TDto>(IEnumerable<string> expansions)

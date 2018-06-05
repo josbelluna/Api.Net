@@ -25,8 +25,8 @@ namespace Api.Dto.Base
         public virtual void BeforeInsert(TDto dto) { }
         public virtual void AfterInsert(TDto dto) { }
 
-        public virtual void ValidateInsert(TDto dto, Error error) { }
-        public virtual void ValidateUpdate(TDto dto, Error error) { }
-        public virtual void ValidateSave(TDto dto, Error error) { }
+        public virtual void ValidateInsert(Validator<TDto> validator) { }
+        public virtual void ValidateUpdate(Validator<TDto> validator) { }
+        public virtual void ValidateSave(Validator<TDto> validator) { }
     }
 }

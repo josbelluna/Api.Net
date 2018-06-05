@@ -1,15 +1,16 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "b628cd0a590ce0169389112505c22fff3145f587"
+    "signature": "a45f2d37d2830d58854546e4020fbb8aad890aa9"
   },
   "compilationOptions": {},
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Api.Net.Core/2.0.0": {
+      "Api.Net.Core/2.0.2": {
         "dependencies": {
           "AutoMapper": "6.2.2",
+          "FluentValidation": "7.6.0",
           "Microsoft.EntityFrameworkCore": "2.1.0",
           "NETStandard.Library": "2.0.0",
           "System.Linq.Dynamic.Core": "1.0.8.9"
@@ -34,6 +35,16 @@
         },
         "runtime": {
           "lib/netstandard1.3/AutoMapper.dll": {}
+        }
+      },
+      "FluentValidation/7.6.0": {
+        "dependencies": {
+          "System.Collections.Concurrent": "4.3.0",
+          "System.ComponentModel.Annotations": "4.5.0",
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
         }
       },
       "Microsoft.CSharp/4.3.0": {
@@ -645,7 +656,7 @@
     }
   },
   "libraries": {
-    "Api.Net.Core/2.0.0": {
+    "Api.Net.Core/2.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -656,6 +667,13 @@
       "sha512": "sha512-eGKcnJdoF5rYMWPUaSPtlWdvua9xw4hnQN5kM/X4AXLGKghrtPIaMv+RYoA3sj0kyZ3X6wZ1Qj67F+u0pCCPaw==",
       "path": "automapper/6.2.2",
       "hashPath": "automapper.6.2.2.nupkg.sha512"
+    },
+    "FluentValidation/7.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OSdjofTbA11BPRMPpSKoREH2THCuKq/fCiOUoEaAbj/iCz2Hm89zczYIiQFZpQDYKhuqeHpdEVrFmkmcpNryUQ==",
+      "path": "fluentvalidation/7.6.0",
+      "hashPath": "fluentvalidation.7.6.0.nupkg.sha512"
     },
     "Microsoft.CSharp/4.3.0": {
       "type": "package",

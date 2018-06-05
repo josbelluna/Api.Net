@@ -24,6 +24,20 @@
           "lib/netstandard1.3/AutoMapper.dll": {}
         }
       },
+      "FluentValidation/7.6.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.Concurrent": "4.3.0",
+          "System.ComponentModel.Annotations": "4.4.1",
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -939,6 +953,23 @@
         "lib/netstandard1.1/AutoMapper.xml",
         "lib/netstandard1.3/AutoMapper.dll",
         "lib/netstandard1.3/AutoMapper.xml"
+      ]
+    },
+    "FluentValidation/7.6.0": {
+      "sha512": "OSdjofTbA11BPRMPpSKoREH2THCuKq/fCiOUoEaAbj/iCz2Hm89zczYIiQFZpQDYKhuqeHpdEVrFmkmcpNryUQ==",
+      "type": "package",
+      "path": "fluentvalidation/7.6.0",
+      "files": [
+        "fluentvalidation.7.6.0.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net45/FluentValidation.dll",
+        "lib/net45/FluentValidation.xml",
+        "lib/netstandard1.1/FluentValidation.dll",
+        "lib/netstandard1.1/FluentValidation.xml",
+        "lib/netstandard1.6/FluentValidation.dll",
+        "lib/netstandard1.6/FluentValidation.xml",
+        "lib/netstandard2.0/FluentValidation.dll",
+        "lib/netstandard2.0/FluentValidation.xml"
       ]
     },
     "Microsoft.CSharp/4.3.0": {
@@ -3801,6 +3832,7 @@
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
       "AutoMapper >= 6.2.2",
+      "FluentValidation >= 7.6.0",
       "Microsoft.EntityFrameworkCore >= 2.1.0",
       "NETStandard.Library >= 2.0.0",
       "System.Linq.Dynamic.Core >= 1.0.8.9"
@@ -3811,16 +3843,16 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "2.0.0",
+    "version": "2.0.2",
     "restoreSettings": {
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\jluna\\Documents\\Visual Studio 2017\\Projects\\Api.Net.Standard\\Api.Net.Core\\Api.Net.Core.csproj",
+      "projectUniqueName": "C:\\Users\\jluna\\Documents\\Projects\\Api.Net.Standard\\Api.Net.Core\\Api.Net.Core.csproj",
       "projectName": "Api.Net.Core",
-      "projectPath": "C:\\Users\\jluna\\Documents\\Visual Studio 2017\\Projects\\Api.Net.Standard\\Api.Net.Core\\Api.Net.Core.csproj",
+      "projectPath": "C:\\Users\\jluna\\Documents\\Projects\\Api.Net.Standard\\Api.Net.Core\\Api.Net.Core.csproj",
       "packagesPath": "C:\\Users\\jluna\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jluna\\Documents\\Visual Studio 2017\\Projects\\Api.Net.Standard\\Api.Net.Core\\obj\\",
+      "outputPath": "C:\\Users\\jluna\\Documents\\Projects\\Api.Net.Standard\\Api.Net.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -3853,6 +3885,10 @@
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "2.1.0"
+          },
+          "FluentValidation": {
+            "target": "Package",
+            "version": "7.6.0"
           },
           "System.Linq.Dynamic.Core": {
             "target": "Package",

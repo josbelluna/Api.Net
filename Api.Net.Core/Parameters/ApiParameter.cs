@@ -14,5 +14,6 @@ namespace Api.Parameters
         public string Exclude { get; set; }
         public bool Descending { get; set; }
         public string Expand { get; set; }
+        public string Project { get; set; }
     }
 }

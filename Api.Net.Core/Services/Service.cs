@@ -64,9 +64,9 @@ namespace Api.Services
 
         public TDto Delete(int id, string applicationUser = "SYSTEM")
         {
-            var errors = new Error();
-            ValidateDelete(id, errors);
-            errors.Validate();
+            var validator = new Validator();
+            ValidateDelete(id, validator);
+            validator.Validate();
 
             var entity = this.Repository.Delete(id, applicationUser);
             return Mapper.Map<TDto>(entity);
@@ -81,16 +81,16 @@ namespace Api.Services
                 dtoEventHandler.BeforeInsert(dto);
 
             }
-            var errors = new Error();
+            var validator = new Validator<TDto>(dto);
             var dtoValidator = dto as IDtoValidator<TDto>;
             if (dtoValidator != null)
             {
-                dtoValidator.ValidateSave(dto, errors);
-                dtoValidator.ValidateInsert(dto, errors);
+                dtoValidator.ValidateSave(validator);
+                dtoValidator.ValidateInsert(validator);
             }
-            ValidateDto(dto, errors);
-            ValidateAdd(dto, errors);
-            errors.Validate();
+            ValidateDto(validator);
+            ValidateAdd(validator);
+            validator.Validate();
 
             Activate(dto);
 
@@ -122,16 +122,16 @@ namespace Api.Services
                 dtoEventHandler.BeforeUpdate(dto);
 
             }
-            var errors = new Error();
+            var validator = new Validator<TDto>(dto);
             var dtoValidator = dto as IDtoValidator<TDto>;
             if (dtoValidator != null)
             {
-                dtoValidator.ValidateSave(dto, errors);
-                dtoValidator.ValidateUpdate(dto, errors);
+                dtoValidator.ValidateSave(validator);
+                dtoValidator.ValidateUpdate(validator);
             }
-            ValidateDto(dto, errors);
-            ValidateUpdate(dto, errors);
-            errors.Validate();
+            ValidateDto(validator);
+            ValidateUpdate(validator);
+            validator.Validate();
 
             var entity = Mapper.Map<TEntity>(dto);
             IncrementVersion(entity);
@@ -157,17 +157,17 @@ namespace Api.Services
             Mapper.Map(dto, entity);
             dto = Mapper.Map<TDto>(entity);
 
-            var errors = new Error();
+            var validator = new Validator<TDto>(dto);
             var dtoValidator = dto as IDtoValidator<TDto>;
             if (dtoValidator != null)
             {
-                dtoValidator.ValidateSave(dto, errors);
-                dtoValidator.ValidateUpdate(dto, errors);
+                dtoValidator.ValidateSave(validator);
+                dtoValidator.ValidateUpdate(validator);
             }
 
-            ValidateDto(dto, errors);
-            ValidateUpdate(dto, errors);
-            errors.Validate();
+            ValidateDto(validator);
+            ValidateUpdate(validator);
+            validator.Validate();
 
             IncrementVersion(entity);
             this.Repository.Update(entity);
@@ -179,10 +179,10 @@ namespace Api.Services
             }
             return dto;
         }
-        public virtual void ValidateDto(TDto dto, Error errors) { }
-        public virtual void ValidateAdd(TDto dto, Error errors) { }
-        public virtual void ValidateUpdate(TDto dto, Error errors) { }
-        public virtual void ValidateDelete(int id, Error errors) { }
+        public virtual void ValidateDto(Validator<TDto> validator) { }
+        public virtual void ValidateAdd(Validator<TDto> validator) { }
+        public virtual void ValidateUpdate(Validator<TDto> validator) { }
+        public virtual void ValidateDelete(int id, Validator validator) { }
 
         public void Dispose()
         {

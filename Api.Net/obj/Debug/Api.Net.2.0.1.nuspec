@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Api.Net</id>
+    <version>2.0.1</version>
+    <authors>josbelluna</authors>
+    <owners>josbelluna</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple implementation of web api using the Repository/Service/Dto patterns and based on Asp Net Core Mvc.</description>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Api.Net.Core" version="2.0.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Mvc" version="1.1.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.dll" target="lib\netstandard2.0\Api.Net.dll" />
+  </files>
+</package>

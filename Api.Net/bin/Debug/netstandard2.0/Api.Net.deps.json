@@ -1,15 +1,15 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "bfcd34ffffa6cca7306ba48c5af6dad41258352a"
+    "signature": "774384f8a8b5ce28495f5e0a963dab86bbc8a502"
   },
   "compilationOptions": {},
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Api.Net/2.0.0": {
+      "Api.Net/2.0.2": {
         "dependencies": {
-          "Api.Net.Core": "2.0.0",
+          "Api.Net.Core": "2.0.2",
           "Microsoft.AspNetCore.Mvc": "1.1.0",
           "NETStandard.Library": "2.0.0"
         },
@@ -33,6 +33,16 @@
         },
         "runtime": {
           "lib/netstandard1.3/AutoMapper.dll": {}
+        }
+      },
+      "FluentValidation/7.6.0": {
+        "dependencies": {
+          "System.Collections.Concurrent": "4.3.0",
+          "System.ComponentModel.Annotations": "4.5.0",
+          "System.ComponentModel.Primitives": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FluentValidation.dll": {}
         }
       },
       "Microsoft.AspNetCore.Antiforgery/1.1.0": {
@@ -1816,9 +1826,10 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "Api.Net.Core/2.0.0": {
+      "Api.Net.Core/2.0.2": {
         "dependencies": {
           "AutoMapper": "6.2.2",
+          "FluentValidation": "7.6.0",
           "Microsoft.EntityFrameworkCore": "2.1.0",
           "System.Linq.Dynamic.Core": "1.0.8.9"
         },
@@ -1829,7 +1840,7 @@
     }
   },
   "libraries": {
-    "Api.Net/2.0.0": {
+    "Api.Net/2.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -1840,6 +1851,13 @@
       "sha512": "sha512-eGKcnJdoF5rYMWPUaSPtlWdvua9xw4hnQN5kM/X4AXLGKghrtPIaMv+RYoA3sj0kyZ3X6wZ1Qj67F+u0pCCPaw==",
       "path": "automapper/6.2.2",
       "hashPath": "automapper.6.2.2.nupkg.sha512"
+    },
+    "FluentValidation/7.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OSdjofTbA11BPRMPpSKoREH2THCuKq/fCiOUoEaAbj/iCz2Hm89zczYIiQFZpQDYKhuqeHpdEVrFmkmcpNryUQ==",
+      "path": "fluentvalidation/7.6.0",
+      "hashPath": "fluentvalidation.7.6.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Antiforgery/1.1.0": {
       "type": "package",
@@ -2940,7 +2958,7 @@
       "path": "system.xml.xpath.xdocument/4.0.1",
       "hashPath": "system.xml.xpath.xdocument.4.0.1.nupkg.sha512"
     },
-    "Api.Net.Core/2.0.0": {
+    "Api.Net.Core/2.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

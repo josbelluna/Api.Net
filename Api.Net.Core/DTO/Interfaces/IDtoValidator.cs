@@ -9,8 +9,8 @@ namespace Api.Dto.Interfaces
 {
     public interface IDtoValidator<TDto>
     {
-        void ValidateInsert(TDto dto, Error error);
-        void ValidateUpdate(TDto dto, Error error);
-        void ValidateSave(TDto dto, Error error);
+        void ValidateInsert(Validator<TDto> validator);
+        void ValidateUpdate(Validator<TDto> validator);
+        void ValidateSave(Validator<TDto> validator);
     }
 }

@@ -8,3 +8,13 @@ C:\Users\jluna\Documents\Visual Studio 2017\Projects\Api.Net.Standard\Api.Net.Co
 C:\Users\jluna\Documents\Visual Studio 2017\Projects\Api.Net.Standard\Api.Net.Core\bin\Debug\netstandard2.0\Api.Net.Core.pdb
 C:\Users\jluna\Documents\Visual Studio 2017\Projects\Api.Net.Standard\Api.Net.Core\obj\Debug\netstandard2.0\Api.Net.Core.dll
 C:\Users\jluna\Documents\Visual Studio 2017\Projects\Api.Net.Standard\Api.Net.Core\obj\Debug\netstandard2.0\Api.Net.Core.pdb
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\bin\Debug\netstandard2.0\Api.Net.Core.dll.config
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\bin\Debug\netstandard2.0\Api.Net.Core.deps.json
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\bin\Debug\netstandard2.0\Api.Net.Core.dll
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\bin\Debug\netstandard2.0\Api.Net.Core.pdb
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\obj\Debug\netstandard2.0\Api.Net.Core.csprojResolveAssemblyReference.cache
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\obj\Debug\netstandard2.0\Api.Net.Core.csproj.CoreCompileInputs.cache
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\obj\Debug\netstandard2.0\Api.Net.Core.AssemblyInfoInputs.cache
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\obj\Debug\netstandard2.0\Api.Net.Core.AssemblyInfo.cs
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\obj\Debug\netstandard2.0\Api.Net.Core.dll
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net.Core\obj\Debug\netstandard2.0\Api.Net.Core.pdb
