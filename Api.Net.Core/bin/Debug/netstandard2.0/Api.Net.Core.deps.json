@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Api.Net.Core/2.0.2": {
+      "Api.Net.Core/2.0.3": {
         "dependencies": {
           "AutoMapper": "6.2.2",
           "FluentValidation": "7.6.0",
@@ -656,7 +656,7 @@
     }
   },
   "libraries": {
-    "Api.Net.Core/2.0.2": {
+    "Api.Net.Core/2.0.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

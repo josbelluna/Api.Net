@@ -10,13 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Api;
 using Api.Attributes;
+using Api.Net.Core.Utils;
+using Api.Net.Core.Metatada;
 
 namespace Api.Controllers
 {
     [ApiControllerModelConvention]
     public class ApiController<TDto> : Controller where TDto : class
     {
-        public string ApplicationUser => Request.Headers["ApplicationUser"];
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
@@ -27,17 +28,17 @@ namespace Api.Controllers
         protected IListService ListService { get; set; }
 
         [HttpGet]
-        [Route("{id:int}")]
-        public virtual IActionResult Find(int id)
+        [Route("{id}")]
+        public virtual IActionResult Find(string id)
         {
             try
             {
-                TDto _obj = Service.Find(id);
+                TDto dto = Service.Find(id);
 
-                if (_obj == null)
-                    throw new ValidateException("The specified resource was not fout");
+                if (dto == null)
+                    throw new ValidateException("The specified resource was not found");
 
-                return Ok(_obj);
+                return Ok(dto);
             }
             catch (ValidateException ex)
             {
@@ -55,7 +56,7 @@ namespace Api.Controllers
             try
             {
                 var parameters = parameter.ProcessParameters(Request.Query);
-                parameters.Filters.Add("Estado", true);
+                parameters.Filters.Add(DtoMetadata.Instance.Convention.ActiveProperty, true);
                 var list = ListService.GetList(Service, parameters);
                 return Ok(list);
             }
@@ -66,19 +67,12 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public virtual IActionResult Add([FromBody] TDto _obj)
+        public virtual IActionResult Add([FromBody] TDto dto)
         {
             try
             {
-                var type = _obj.GetType();
-
-                type.GetProperty("FechaCreacion")?.SetValue(_obj, DateTime.Now);
-                type.GetProperty("CreadoPor")?.SetValue(_obj, ApplicationUser ?? "SYSTEM");
-
-                var version = type.GetProperty("Version");
-                version?.SetValue(_obj, ((int)version.GetValue(_obj)) + 1);
-                _obj = Service.Add(_obj);
-                return Ok(_obj);
+                dto = Service.Add(dto);
+                return Ok(dto);
             }
             catch (ValidateException ex)
             {
@@ -92,21 +86,13 @@ namespace Api.Controllers
         }
 
         [HttpPut]
-        [Route("{id:int}")]
-        public virtual IActionResult Put([FromBody] TDto _obj)
+        [Route("{id}")]
+        public virtual IActionResult Update(string id, [FromBody] TDto dto)
         {
             try
             {
-                var type = _obj.GetType();
-
-                type.GetProperty("FechaModificacion")?.SetValue(_obj, DateTime.Now);
-                type.GetProperty("ModificadoPor")?.SetValue(_obj, ApplicationUser ?? "SYSTEM");
-
-                var version = type.GetProperty("Version");
-                version?.SetValue(_obj, ((int)version.GetValue(_obj)) + 1);
-
-                _obj = Service.Update(_obj);
-                return Ok(_obj);
+                dto = Service.Update(id, dto);
+                return Ok(dto);
             }
             catch (ValidateException ex)
             {
@@ -120,24 +106,16 @@ namespace Api.Controllers
 
 
         [HttpPatch]
-        [Route("{id:int}")]
-        public virtual IActionResult PartialUpdate(int id, [FromBody] object changes)
+        [Route("{id}")]
+        public virtual IActionResult PartialUpdate(string id, [FromBody] object changes)
         {
             try
             {
                 var dto = Service.Find(id);
+                if (dto == null) throw new ValidateException("Resource not found");
                 var patch = changes.ToJsonPatchDocument();
                 patch.ApplyTo(dto);
-
-                var type = dto.GetType();
-
-                type.GetProperty("FechaModificacion")?.SetValue(dto, DateTime.Now);
-                type.GetProperty("ModificadoPor")?.SetValue(dto, ApplicationUser);
-
-                var version = type.GetProperty("Version");
-                version?.SetValue(dto, ((int)version.GetValue(dto)) + 1);
-
-                Service.PartialUpdate(id, dto);
+                Service.Update(id, dto);
                 return Ok(dto);
             }
             catch (ValidateException ex)
@@ -151,12 +129,12 @@ namespace Api.Controllers
         }
 
         [HttpDelete]
-        [Route("{id:int}")]
-        public virtual IActionResult Delete(int id)
+        [Route("{id}")]
+        public virtual IActionResult Delete(object id)
         {
             try
             {
-                var result = Service.Delete(id, ApplicationUser);
+                var result = Service.Delete(id);
                 return Ok(result);
             }
             catch (ValidateException ex)

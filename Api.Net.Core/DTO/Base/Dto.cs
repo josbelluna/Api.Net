@@ -8,7 +8,7 @@ namespace Api.Dto.Base
 {
     public abstract class Dto<TDto, TEntity> : IDto<TDto, TEntity>, IDtoEvent<TDto>, IDtoValidator<TDto> where TDto : class where TEntity : class
     {
-        public  void MapExpandables(IMap<TDto, TEntity> mapper)
+        public void MapExpandables(IMap<TDto, TEntity> mapper)
         {
             var expands = this.GetType().GetProperties().Where(p => p.IsDefined(typeof(ExpandableAttribute), true)).Select(t => t.Name);
             foreach (var expand in expands)
@@ -27,6 +27,6 @@ namespace Api.Dto.Base
 
         public virtual void ValidateInsert(Validator<TDto> validator) { }
         public virtual void ValidateUpdate(Validator<TDto> validator) { }
-        public virtual void ValidateSave(Validator<TDto> validator) { }
+        public virtual void ValidateSave(Validator<TDto> validator) { }      
     }
 }

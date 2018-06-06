@@ -8,13 +8,13 @@ using Api.Utils;
 using Api.Models;
 using System.Collections.Generic;
 using Api.Dto.Base;
+using Api.Net.Core.Utils;
+using Api.Exceptions;
 
 namespace Api.Services
 {
     public class Service<TDto, TEntity> : IService<TDto> where TEntity : class where TDto : class
     {
-        private IRepository<TEntity> repository;
-
         public Service(IRepository<TEntity> repository)
         {
             this.Repository = repository;
@@ -45,30 +45,14 @@ namespace Api.Services
             return dto;
         }
 
-        public void IncrementVersion(TEntity entity)
-        {
-            var version = entity.GetType().GetProperty("Version");
-            if (version == null || version.GetValue(entity) == null) return;
-            version.SetValue(entity, (int)version.GetValue(entity) + 1);
-        }
-        public void ActivateEntity(TEntity entity)
-        {
-            var version = entity.GetType().GetProperty("Estado");
-            version?.SetValue(entity, true);
-        }
-        public void Activate(TDto dto)
-        {
-            if (dto is IEstado)
-                ((IEstado)dto).Estado = true;
-        }
-
-        public TDto Delete(int id, string applicationUser = "SYSTEM")
+        public TDto Delete(object id)
         {
             var validator = new Validator();
             ValidateDelete(id, validator);
             validator.Validate();
 
-            var entity = this.Repository.Delete(id, applicationUser);
+            var entity = this.Repository.Delete(id);
+            if (entity == null) throw new ValidateException("Resource not found");
             return Mapper.Map<TDto>(entity);
         }
 
@@ -92,11 +76,7 @@ namespace Api.Services
             ValidateAdd(validator);
             validator.Validate();
 
-            Activate(dto);
-
             var entity = Mapper.Map<TEntity>(dto);
-            IncrementVersion(entity);
-            ActivateEntity(entity);
             this.Repository.Add(entity);
 
             dto = Mapper.Map<TDto>(entity);
@@ -110,42 +90,13 @@ namespace Api.Services
 
         public virtual void AddRange(IEnumerable<TDto> dtos)
         {
+            Repository.RestrictSave();
             foreach (var dto in dtos) Add(dto);
+            Repository.EnableSave();
             Repository.SaveChanges();
         }
-        public virtual TDto Update(TDto dto)
-        {
-            var dtoEventHandler = dto as IDtoEvent<TDto>;
-            if (dtoEventHandler != null)
-            {
-                dtoEventHandler.BeforeSave(dto);
-                dtoEventHandler.BeforeUpdate(dto);
-
-            }
-            var validator = new Validator<TDto>(dto);
-            var dtoValidator = dto as IDtoValidator<TDto>;
-            if (dtoValidator != null)
-            {
-                dtoValidator.ValidateSave(validator);
-                dtoValidator.ValidateUpdate(validator);
-            }
-            ValidateDto(validator);
-            ValidateUpdate(validator);
-            validator.Validate();
-
-            var entity = Mapper.Map<TEntity>(dto);
-            IncrementVersion(entity);
-            this.Repository.Update(entity);
-
-            dto = Mapper.Map<TDto>(entity);
-            if (dtoEventHandler != null)
-            {
-                dtoEventHandler.AfterSave(dto);
-                dtoEventHandler.AfterUpdate(dto);
-            }
-            return dto;
-        }
-        public virtual TDto PartialUpdate(object id, TDto dto)
+      
+        public virtual TDto Update(object key, TDto dto)
         {
             var dtoEventHandler = dto as IDtoEvent<TDto>;
             if (dtoEventHandler != null)
@@ -153,7 +104,7 @@ namespace Api.Services
                 dtoEventHandler.BeforeSave(dto);
                 dtoEventHandler.BeforeUpdate(dto);
             }
-            var entity = this.Repository.Find(id);
+            var entity = this.Repository.Find(key);
             Mapper.Map(dto, entity);
             dto = Mapper.Map<TDto>(entity);
 
@@ -169,7 +120,6 @@ namespace Api.Services
             ValidateUpdate(validator);
             validator.Validate();
 
-            IncrementVersion(entity);
             this.Repository.Update(entity);
             dto = Mapper.Map<TDto>(entity);
             if (dtoEventHandler != null)
@@ -179,10 +129,11 @@ namespace Api.Services
             }
             return dto;
         }
+
         public virtual void ValidateDto(Validator<TDto> validator) { }
         public virtual void ValidateAdd(Validator<TDto> validator) { }
         public virtual void ValidateUpdate(Validator<TDto> validator) { }
-        public virtual void ValidateDelete(int id, Validator validator) { }
+        public virtual void ValidateDelete(object id, Validator validator) { }
 
         public void Dispose()
         {

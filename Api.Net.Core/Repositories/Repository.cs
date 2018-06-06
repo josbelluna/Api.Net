@@ -7,11 +7,15 @@ using System.Collections;
 using Api.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Api.Net.Core.Utils;
+using Api.Exceptions;
 
 namespace Api.Repositories
 {
     public class Repository<TContext, TEntity> : IRepository<TEntity> where TEntity : class where TContext : DbContext
     {
+        private bool _save = true;
+
         public TContext Context { get; }
         public Repository(TContext context)
         {
@@ -22,120 +26,66 @@ namespace Api.Repositories
 
         public virtual IQueryable<TEntity> GetEntities()
         {
-            return this.Context.Set<TEntity>().AsNoTracking();
+            return this.Context.Set<TEntity>();
         }
 
         public virtual TEntity Find(object key)
         {
+            key = EntityUtils.ConvertIdentifier<TEntity>(key);
             var entity = this.Context.Set<TEntity>().Find(key);
             return entity;
         }
         public virtual void Add(TEntity entity)
         {
-            this.AttachProperties(entity);
+            EntityUtils.SetActive(entity, true);
             this.Context.Set<TEntity>().Add(entity);
             SaveChanges();
         }
 
         public virtual void AddRange(IEnumerable<TEntity> entities)
         {
+            foreach (var entity in entities) EntityUtils.SetActive(entity, true);
             this.Context.Set<TEntity>().AddRange(entities);
             SaveChanges();
         }
+
         public virtual void Update(TEntity entity)
         {
+            var version = EntityUtils.GetVersion(entity);
+            if (version.HasValue) EntityUtils.SetVersion(entity, version.Value + 1);
             this.Context.Entry(entity).State = EntityState.Modified;
             SaveChanges();
         }
         public void UpdateRange(IEnumerable<TEntity> entities)
         {
+            RestrictSave();
             foreach (var entity in entities) Update(entity);
-        }
-        public virtual void Remove(TEntity entity)
-        {
-            this.Context.Set<TEntity>().Remove(entity);
+            EnableSave();
             SaveChanges();
         }
-        public virtual void Remove(object id)
+        public virtual TEntity Delete(TEntity entity)
+        {
+            var success = EntityUtils.SetActive(entity, false);
+            if (!success) this.Context.Set<TEntity>().Remove(entity);
+
+            SaveChanges();
+            return entity;
+        }
+        public virtual TEntity Delete(object id)
         {
             var entity = this.Find(id);
-            this.Context.Set<TEntity>().Remove(entity);
-            SaveChanges();
-        }
-        public virtual void Delete(TEntity entity)
-        {
-            this.Attach(entity, EntityState.Deleted);
-
-            this.SaveChanges();
+            if (entity == null) return null;
+            entity = Delete(entity);
+            return entity;
         }
 
-        public TEntity Delete(int id, string user = "SYSTEM")
-        {
-            var _obj = Find(id);
-            var type = _obj.GetType();
-
-            var active = type.GetProperty("Active");
-
-            if (active != null)
-            {
-                active.SetValue(_obj, false);
-                Update(_obj);
-                return _obj;
-            }
-            Delete(_obj);
-            return _obj;
-        }
+        public void RestrictSave() { _save = false; }
+        public void EnableSave() { _save = true; }
 
         public virtual void SaveChanges()
         {
-            this.Context.SaveChanges();
+            if (_save) this.Context.SaveChanges();
         }
-
-        public virtual EntityEntry GetEntry(TEntity entity)
-        {
-            var entry = this.Context.ChangeTracker.Entries<TEntity>().FirstOrDefault(t => t.Entity.Equals(entity));
-
-            if (entry == null)
-                entry = this.Context.Entry(entity);
-
-            return entry;
-        }
-        public virtual void AttachProperties(object entity, EntityState entryState = EntityState.Unchanged)
-        {
-            Type _type = entity.GetType();
-            foreach (var property in _type.GetProperties())
-            {
-                try
-                {
-                    var entry = this.Context.Entry(property.GetValue(entity));
-                    entry.State = entryState;
-                }
-                catch
-                {
-                    //TODO
-                }
-
-            }
-        }
-        public virtual TEntity Attach(TEntity entity, EntityState estate)
-        {
-            this.GetEntry(entity).State = estate;
-            return entity;
-        }
-        public virtual void DetachAll()
-        {
-
-            foreach (EntityEntry dbEntityEntry in this.Context.ChangeTracker.Entries())
-            {
-
-                if (dbEntityEntry.Entity != null)
-                {
-                    dbEntityEntry.State = EntityState.Detached;
-                }
-            }
-        }
-
-        private bool _isDisposed;
 
         public void Dispose()
         {

@@ -14,6 +14,6 @@ namespace Api.Dto.Interfaces
        void BeforeUpdate(TDto dto);
        void AfterUpdate(TDto dto);
        void BeforeSave(TDto dto);
-       void AfterSave(TDto dto);
+       void AfterSave(TDto dto);   
     }
 }

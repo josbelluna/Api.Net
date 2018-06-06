@@ -2616,7 +2616,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "Api.Net.Core/2.0.2": {
+      "Api.Net.Core/2.0.3": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
@@ -7736,7 +7736,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Api.Net.Core/2.0.2": {
+    "Api.Net.Core/2.0.3": {
       "type": "project",
       "path": "../Api.Net.Core/Api.Net.Core.csproj",
       "msbuildProject": "../Api.Net.Core/Api.Net.Core.csproj"
@@ -7744,7 +7744,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
-      "Api.Net.Core >= 2.0.2",
+      "Api.Net.Core >= 2.0.3",
       "Microsoft.AspNetCore.Mvc >= 1.1.0",
       "NETStandard.Library >= 2.0.0"
     ]
@@ -7754,7 +7754,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "2.0.2",
+    "version": "2.0.3",
     "restoreSettings": {
       "hideWarningsAndErrors": true
     },

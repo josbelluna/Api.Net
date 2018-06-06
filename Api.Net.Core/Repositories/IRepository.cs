@@ -10,15 +10,16 @@ namespace Api.Repositories
         IQueryable<TEntity> Entities { get; }
         TEntity Find(object key);
         void Update(TEntity entity);
-        void Remove(TEntity entity);
-        void Remove(object id);
+
+        TEntity Delete(TEntity entity);
+        TEntity Delete(object id);
+
         void Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);
         void UpdateRange(IEnumerable<TEntity> entities);
-        void AttachProperties(object entity, EntityState entryState = EntityState.Unchanged);
-        TEntity Attach(TEntity entity, EntityState estate);
+
+        void RestrictSave();
+        void EnableSave();
         void SaveChanges();
-        void Delete(TEntity entity);
-        TEntity Delete(int id, string user);
     }
 }

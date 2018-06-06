@@ -1,4 +1,5 @@
-﻿using Api.Net.Core.Models;
+﻿using Api.Net.Core.Conventions;
+using Api.Net.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,13 @@ namespace Api.Net.Core.Metatada
                 return _instance;
             }
         }
-        private DtoMetadata() {
+        private DtoMetadata()
+        {
             Projections = new Dictionary<Type, IEnumerable<ProjectionDefinition>>();
         }
 
         public Dictionary<Type, IEnumerable<ProjectionDefinition>> Projections { get; set; }
+        public ApiConvention Convention { get; set; }
 
         public ProjectionDefinition ResolveProyection(Type dtoType, string name)
         {

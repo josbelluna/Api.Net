@@ -70,7 +70,11 @@ namespace Api.Builder
                 DtoMetadata.Instance.Projections.Add(dto, projections);
             }
         }
-
+        public ApiBuilder AddConventions()
+        {
+            DtoMetadata.Instance.Convention = Options.Conventions;
+            return this;
+        }
         public ApiBuilder AddDtoServices()
         {
             var dtos = MapperUtils.GetAllDtos();

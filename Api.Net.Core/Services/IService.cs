@@ -16,17 +16,14 @@ namespace Api.Services
 
         TDto Add(TDto dto);
         void AddRange(IEnumerable<TDto> dtos);
-        TDto Update(TDto dto);
-        TDto PartialUpdate(object id, TDto dto);
+        TDto Update(object key, TDto dto);
 
         void ValidateDto(Validator<TDto> validator);
         void ValidateAdd(Validator<TDto> validator);
         void ValidateUpdate(Validator<TDto> validator);
-        void ValidateDelete(int id, Validator validator);
+        void ValidateDelete(object id, Validator validator);
 
-
-        void Activate(TDto dto);
-        TDto Delete(int id, string applicationUser);
+        TDto Delete(object id);
     }
     public interface IService<TDto, TEntity> : IService<TDto> { }
 }
