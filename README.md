@@ -31,7 +31,10 @@ public class Startup
 {        
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMvc().AddApi();
+        services.AddMvc().AddApi(opt =>
+            {
+                opt.ContextOption = (config, connectionstring) => config.UseSqlServer(connectionstring);
+            });
     }
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
@@ -90,7 +93,10 @@ public class Startup
 {        
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMvc().AddApi(opt => opt.RoutePrefix = "api/myblog");
+        services.AddMvc().AddApi(opt => {
+            opt.ContextOption = (config, connectionstring) => config.UseSqlServer(connectionstring);
+            opt.RoutePrefix = "api/myblog"
+        });
     }  
     ...
 }
@@ -304,9 +310,9 @@ Just separate the statements by `|` as follows:
     ]
 }
 ```
-#### f. Inner properties
+#### f. Expandable and Inner properties
 
-The next dto 
+Use the attribute `Expandable` to add related dto as properties. The next dto 
 ```csharp
 [ApiEndpoint("articles")]
 public class ArticleDto : Dto<ArticleDto, Article>
@@ -314,12 +320,13 @@ public class ArticleDto : Dto<ArticleDto, Article>
     public int Id { get; set; }
     public string Name { get; set; }
     public int AuthorId { get; set; }
+    [Expandable]
     public AuthorDto Author { get; set; }
 }
 ```
 Will expose
 
-`GET /api/myblog/articles`
+`GET /api/myblog/articles?expand=author`
 ```json
 {
     "count":3,
@@ -333,7 +340,7 @@ Will expose
 ```
 The all filters explained before can be applied to inner properties just adding `.`  as for example
 
-`GET /api/myblog/articles?author.fullName=*John`
+`GET /api/myblog/articles?expand=author&author.fullName=*John`
 ```json
 {"count":1,"data":[{"id":7,"name":"Managing concurrency in databases","authorId":5,"author":{"id":5,"name":"John","lastName":"Doe","fullName":"John Doe"}}]}
 ```
