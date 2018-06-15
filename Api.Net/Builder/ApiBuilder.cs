@@ -96,7 +96,7 @@ namespace Api.Builder
         public ApiBuilder AddApiServices()
         {
             var apiServices = MapperUtils.GetApiServices();
-            Services.AddScoped<IListService, ListService>();
+            Services.AddTransient<IListService, ListService>();
             Services.AddSingleton<IRelationalDtoService, RelationalDtoService>();
             InjectInterfaces(Services, apiServices);
             return this;
@@ -125,7 +125,7 @@ namespace Api.Builder
             foreach (var context in contexts)
             {
                 var builder = new DbContextOptionsBuilder();
-                Services.AddScoped(context, p =>
+                Services.AddTransient(context, p =>
                   {
                       return Activator.CreateInstance(context, Options.ContextOption(builder, p.GetService<IConfiguration>().GetConnectionString(context.Name)).Options);
                   });
@@ -140,7 +140,7 @@ namespace Api.Builder
         }
         public IServiceCollection AddService<TService, TDto>(IServiceCollection services) where TService : class, IService<TDto> where TDto : class
         {
-            services.AddScoped<IService<TDto>, TService>();
+            services.AddTransient<IService<TDto>, TService>();
             return services;
         }
         private void InjectInterfaces(IServiceCollection services, IEnumerable<Type> types)
@@ -148,8 +148,10 @@ namespace Api.Builder
             foreach (var type in types)
             {
                 var interfaces = type.GetInterfaces();
-                if (interfaces.Length <= 0) continue;
-
+                if (!services.Any(t => t.ServiceType == type))
+                {
+                    services.AddScoped(type);
+                }
                 foreach (var @interface in interfaces)
                 {
                     if (services.Any(t => t.ServiceType == @interface)) continue;
