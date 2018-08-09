@@ -15,8 +15,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Api.Net.Core\Api.Net.Core.csproj" />
-  </ItemGroup>
-
 </Project>

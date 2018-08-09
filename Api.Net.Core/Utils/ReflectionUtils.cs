@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Api.Utils
 {
-   public static class ReflectionUtils
+    public static class ReflectionUtils
     {
         public static PropertyInfo SelectMatch(this IEnumerable<PropertyInfo> properties, string propertyName)
         {
             return properties.FirstOrDefault(t => String.Equals(t.Name, propertyName, StringComparison.OrdinalIgnoreCase));
         }
 
-        public static void SetValue(this object obj,string property,object value)
+        public static void SetValue(this object obj, string property, object value)
         {
             var _property = obj.GetType().GetProperty(property);
             if (_property == null) return;
@@ -28,12 +28,12 @@ namespace Api.Utils
             var _property = obj.GetType().GetProperty(property);
             if (_property == null) return null;
 
-           return _property.GetValue(obj, null);
+            return _property.GetValue(obj, null);
         }
 
         public static T GetValue<T>(this object obj, string property)
         {
-            if(obj == null )
+            if (obj == null)
                 return default(T);
 
             var _property = obj.GetType().GetProperty(property);
@@ -41,5 +41,6 @@ namespace Api.Utils
 
             return (T)_property.GetValue(obj, null);
         }
+    
     }
 }

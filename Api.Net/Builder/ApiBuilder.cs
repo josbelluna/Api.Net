@@ -18,6 +18,7 @@ using System.Reflection;
 using Api.Attributes;
 using Api.Net.Core.Metatada;
 using Api.Net.Core.Models;
+using Api.Net.Utils;
 
 namespace Api.Builder
 {
@@ -155,9 +156,13 @@ namespace Api.Builder
                 foreach (var @interface in interfaces)
                 {
                     if (services.Any(t => t.ServiceType == @interface)) continue;
-                    services.AddScoped(@interface, type);
+                    if (type.CountGenericArguments() > @interface.CountGenericArguments()) continue;
+
+                    var attribute = type.GetCustomAttributes(true).OfType<InjectableAttribute>().FirstOrDefault();
+                    services.AddServiceWithLifeTime(@interface, type, attribute?.LifeTime);
                 }
             }
         }
+
     }
 }

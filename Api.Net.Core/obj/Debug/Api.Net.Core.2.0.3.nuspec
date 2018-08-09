@@ -9,10 +9,10 @@
     <description>Core Libraries for Api.Net</description>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Microsoft.EntityFrameworkCore" version="2.1.0" exclude="Build,Analyzers" />
-        <dependency id="FluentValidation" version="7.6.0" exclude="Build,Analyzers" />
-        <dependency id="System.Linq.Dynamic.Core" version="1.0.8.9" exclude="Build,Analyzers" />
         <dependency id="AutoMapper" version="6.2.2" exclude="Build,Analyzers" />
+        <dependency id="FluentValidation" version="7.6.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="System.Linq.Dynamic.Core" version="1.0.8.9" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
