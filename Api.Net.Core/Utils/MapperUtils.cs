@@ -67,9 +67,9 @@ namespace Api.Utils
         }
         public static IEnumerable<Type> GetAllContext()
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = GetAssemblies();
 
-            var contexts = assemblies.SelectMany(t => t.DefinedTypes).Where(t => !t.IsAbstract && typeof(DbContext).IsAssignableFrom(t));
+            var contexts = assemblies.SelectMany(t => t.DefinedTypes).Where(t => !t.IsAbstract && t.InheritsFrom(typeof(DbContext)));
             return contexts;
         }
         public static IEnumerable<Type> GetApiRepositories()

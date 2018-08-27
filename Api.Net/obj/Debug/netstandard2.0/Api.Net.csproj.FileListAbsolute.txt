@@ -10,6 +10,12 @@ C:\Users\jluna\Documents\Visual Studio 2017\Projects\Api.Net.Standard\Api.Net\bi
 C:\Users\jluna\Documents\Visual Studio 2017\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.Core.pdb
 C:\Users\jluna\Documents\Visual Studio 2017\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard2.0\Api.Net.dll
 C:\Users\jluna\Documents\Visual Studio 2017\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard2.0\Api.Net.pdb
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.deps.json
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.dll
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.pdb
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.Core.dll
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.Core.pdb
+C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.Core.dll.config
 C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard2.0\Api.Net.csprojAssemblyReference.cache
 C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard2.0\Api.Net.csproj.CoreCompileInputs.cache
 C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard2.0\Api.Net.AssemblyInfoInputs.cache
@@ -17,9 +23,3 @@ C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard
 C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard2.0\Api.Net.csproj.CopyComplete
 C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard2.0\Api.Net.dll
 C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\obj\Debug\netstandard2.0\Api.Net.pdb
-C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.deps.json
-C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.dll
-C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.pdb
-C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.Core.dll
-C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.Core.pdb
-C:\Users\jluna\Documents\Projects\Api.Net.Standard\Api.Net\bin\Debug\netstandard2.0\Api.Net.Core.dll.config

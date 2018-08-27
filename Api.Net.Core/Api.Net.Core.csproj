@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.0.3</Version>
+    <Version>2.0.5</Version>
     <Authors>josbelluna</Authors>
     <Company>josbelluna</Company>
-    <Description>Core Libraries for Api.Net</Description>
+    <Description>Core Libraries for Api.Net. Source code and docs in https://github.com/josbelluna/Api.Net</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>2.0.3.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <FileVersion>2.0.5.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
