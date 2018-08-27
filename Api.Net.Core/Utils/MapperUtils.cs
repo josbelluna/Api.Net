@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Api.Net.Core.DataAccess.Entity;
 
 namespace Api.Utils
 {
@@ -55,8 +56,14 @@ namespace Api.Utils
         }
         public static IEnumerable<ContextEntities> GetAllContextEntities()
         {
+            return GetContextEntities().Concat(GetBaseEntities());
+        }
+
+        private static IEnumerable<ContextEntities> GetContextEntities()
+        {
             var asseblies = GetAssemblies();
-            var contexts = asseblies.SelectMany(t => t.DefinedTypes).Where(t => !t.IsAbstract && typeof(DbContext).IsAssignableFrom(t));
+            var contexts = asseblies.SelectMany(t => t.DefinedTypes).Where(t => !t.IsAbstract && t.InheritsFrom(typeof(DbContext)));
+
             foreach (var context in contexts)
             {
                 var entities = context.GetProperties().Where(t => t.PropertyType.IsGenericType && t.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>))
@@ -64,6 +71,21 @@ namespace Api.Utils
                 foreach (var entity in entities)
                     yield return new ContextEntities { DbContextType = context, EntityType = entity };
             }
+        }
+
+        private static IEnumerable<ContextEntities> GetBaseEntities()
+        {
+            List<Type> entities = new List<Type>();
+            var types = GetAssemblies().SelectMany(t => t.DefinedTypes).Where(t => !t.IsAbstract);
+            foreach (var type in types)
+            {
+                var interfaces = type.GetInterfaces().Where(t2 => t2.IsGenericType && t2.GetGenericTypeDefinition() == typeof(IBaseEntity<,>));
+                if (!interfaces.Any()) continue;
+                entities.Add(interfaces.FirstOrDefault());
+
+            }
+            foreach (var entity in entities)
+                yield return new ContextEntities { DbContextType = entity.GetGenericArguments()[1], EntityType = entity.GetGenericArguments()[0] };
         }
         public static IEnumerable<Type> GetAllContext()
         {
