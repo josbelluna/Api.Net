@@ -42,11 +42,11 @@ namespace Api.Controllers
             }
             catch (ValidateException ex)
             {
-                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.GetInnerMessages());
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.GetInnerMessages());
             }
         }
 
@@ -77,7 +77,7 @@ namespace Api.Controllers
             catch (ValidateException ex)
             {
                 Response.ContentType = "text/plain";
-                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.GetInnerMessages());
             }
             catch (Exception ex)
             {
@@ -96,7 +96,7 @@ namespace Api.Controllers
             }
             catch (ValidateException ex)
             {
-                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.GetInnerMessages());
             }
             catch (Exception ex)
             {
@@ -120,7 +120,7 @@ namespace Api.Controllers
             }
             catch (ValidateException ex)
             {
-                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.GetInnerMessages());
             }
             catch (Exception ex)
             {
@@ -130,7 +130,7 @@ namespace Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public virtual IActionResult Delete(object id)
+        public virtual IActionResult Delete(string id)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace Api.Controllers
             }
             catch (ValidateException ex)
             {
-                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.GetInnerMessages());
             }
             catch (Exception ex)
             {

@@ -126,6 +126,7 @@ namespace Api.Builder
             foreach (var context in contexts)
             {
                 var builder = new DbContextOptionsBuilder();
+                builder.UseLazyLoadingProxies();
                 Services.AddTransient(context, p =>
                   {
                       return Activator.CreateInstance(context, Options.ContextOption(builder, p.GetService<IConfiguration>().GetConnectionString(context.Name)).Options);
@@ -155,7 +156,6 @@ namespace Api.Builder
                 }
                 foreach (var @interface in interfaces)
                 {
-                    if (services.Any(t => t.ServiceType == @interface)) continue;
                     if (type.CountGenericArguments() > @interface.CountGenericArguments()) continue;
 
                     var attribute = type.GetCustomAttributes(true).OfType<InjectableAttribute>().FirstOrDefault();
