@@ -127,10 +127,13 @@ namespace Api.Builder
             {
                 var builder = new DbContextOptionsBuilder();
                 builder.UseLazyLoadingProxies();
-                Services.AddTransient(context, p =>
+                var lifetime = context.GetCustomAttribute<ApiContext>()?.LifeTime ?? Enums.LifeTime.Transient;
+                var serviceLifeTime = (ServiceLifetime)(int)lifetime;
+
+                Services.Add(new ServiceDescriptor(context, p =>
                   {
                       return Activator.CreateInstance(context, Options.ContextOption(builder, p.GetService<IConfiguration>().GetConnectionString(context.Name)).Options);
-                  });
+                  }, serviceLifeTime));
             }
 
             return this;
