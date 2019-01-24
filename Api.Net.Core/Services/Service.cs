@@ -39,6 +39,7 @@ namespace Api.Services
         }
         public virtual TDto Find(object key)
         {
+            if (key is null) throw new ValidateException("Resource not found");
             var entity = this.Repository.Find(key);
             var dto = Mapper.Map<TDto>(entity);
             (dto as IDtoEvent<TDto>)?.BeforeGet(dto);
@@ -47,6 +48,7 @@ namespace Api.Services
 
         public TDto Delete(object id)
         {
+            if (id is null) throw new ValidateException("Resource not found");
             var validator = new Validator();
             ValidateDelete(id, validator);
             validator.Validate();
@@ -58,6 +60,7 @@ namespace Api.Services
 
         public virtual TDto Add(TDto dto)
         {
+            if (dto is null) throw new ValidateException("Resource not found");
             var dtoEventHandler = dto as IDtoEvent<TDto>;
             if (dtoEventHandler != null)
             {
@@ -90,14 +93,16 @@ namespace Api.Services
 
         public virtual void AddRange(IEnumerable<TDto> dtos)
         {
+            if (dtos is null) throw new ValidateException("Resource not found");
             Repository.RestrictSave();
             foreach (var dto in dtos) Add(dto);
             Repository.EnableSave();
             Repository.SaveChanges();
         }
-      
+
         public virtual TDto Update(object key, TDto dto)
         {
+            if (key is null || dto is null) throw new ValidateException("Resource not found");
             var dtoEventHandler = dto as IDtoEvent<TDto>;
             if (dtoEventHandler != null)
             {
