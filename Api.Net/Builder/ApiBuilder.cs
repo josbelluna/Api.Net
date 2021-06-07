@@ -45,10 +45,13 @@ namespace Api.Builder
         }
         public ApiBuilder AddDtoMaps()
         {
-            Mapper.Initialize(c =>
+            var config = new MapperConfiguration(cfg =>
             {
-                c.ResolveDtoMaps();
+                cfg.ResolveDtoMaps();
             });
+
+            var mapper = config.CreateMapper();
+
             ResolveDtoProjections();
             return this;
         }

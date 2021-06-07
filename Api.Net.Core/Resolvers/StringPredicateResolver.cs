@@ -7,7 +7,7 @@ using Api.Models;
 
 namespace Api.Resolvers
 {
-   public class StringPredicateResolver
+    public class StringPredicateResolver
     {
         public Predicate GetPredicate(string value, string sign)
         {

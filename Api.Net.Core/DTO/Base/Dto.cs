@@ -27,6 +27,6 @@ namespace Api.Dto.Base
 
         public virtual void ValidateInsert(Validator<TDto> validator) { }
         public virtual void ValidateUpdate(Validator<TDto> validator) { }
-        public virtual void ValidateSave(Validator<TDto> validator) { }      
+        public virtual void ValidateSave(Validator<TDto> validator) { }
     }
 }

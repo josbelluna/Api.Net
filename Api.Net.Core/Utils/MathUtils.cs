@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Api.Utils
 {
-   public static class MathUtils
+    public static class MathUtils
     {
         public static decimal Round(decimal a, int digits)
         {
