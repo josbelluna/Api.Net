@@ -5,7 +5,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>josbelluna</Authors>
     <Company>josbelluna</Company>
-    <Description>Simple implementation of web api using the Repository/Service/Dto patterns and based on Asp Net Core Mvc. . Source code and docs in https://github.com/josbelluna/Api.Net </Description>
+    <Description>Simple implementation of web api using the Repository/Service/Dto patterns and based on Asp Net Core Mvc. . Source code and docs in https://github.com/josbelluna/Api.Net</Description>
+    <AssemblyVersion>2.1.4.0</AssemblyVersion>
+    <FileVersion>2.1.4.0</FileVersion>
     <Version>2.1.4.0</Version>
   </PropertyGroup>
 
