@@ -6,7 +6,6 @@
     <Company>josbelluna</Company>
     <Description>Core Libraries for Api.Net. Source code and docs in https://github.com/josbelluna/Api.Net</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
