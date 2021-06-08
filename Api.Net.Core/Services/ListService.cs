@@ -50,18 +50,18 @@ namespace Api.Services
             return result;
         }
 
-        public ListResult GetList<TDto>(IService<TDto> service)
-        {
-            var entities = service.GetDto(); //: service.Dto;
+        //public ListResult GetList<TDto>(IService<TDto> service)
+        //{
+        //    var entities = service.GetDto(); //: service.Dto;
 
-            var result = new ListResult
-            {
-                Count = entities.Count(),
-                Data = entities
-            };
+        //    var result = new ListResult
+        //    {
+        //        Count = entities.Count(),
+        //        Data = entities
+        //    };
 
-            return result;
-        }
+        //    return result;
+        //}
 
         private IEnumerable<string> ResolveProjectionProperties(Type type, string projection)
         {
