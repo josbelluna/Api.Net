@@ -4,6 +4,20 @@ namespace Api.Models
 {
     public class ListParameters
     {
+        public ListParameters()
+        {
+            this.CurrentPage = 1;
+            this.PageSize = 10;
+            this.Descending = true;
+        }
+
+        public ListParameters(int currentPage, int pageSize, bool descending)
+        {
+            this.CurrentPage = currentPage < 1 ? 1 : currentPage;
+            this.PageSize = pageSize > 10 ? 10 : pageSize;
+            this.Descending = descending;
+        }
+
         public Dictionary<string, object> Filters { get; set; }
         public IEnumerable<string> Selections { get; set; }
         public IEnumerable<string> Exclusions { get; set; }

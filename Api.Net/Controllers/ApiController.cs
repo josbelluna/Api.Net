@@ -51,13 +51,27 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public virtual IActionResult GetAll(ApiParameter parameter)
+        public virtual IActionResult GetAll([FromQuery]ApiParameter parameter)
         {
             try
             {
                 var parameters = parameter.ProcessParameters(Request.Query);
                 parameters.Filters.Add(DtoMetadata.Instance.Convention.ActiveProperty, true);
                 var list = ListService.GetList(Service, parameters);
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.GetInnerMessages());
+            }
+        }
+
+        [HttpGet]
+        public virtual IActionResult GetAll()
+        {
+            try
+            {
+                var list = ListService.GetList(Service);
                 return Ok(list);
             }
             catch (Exception ex)
