@@ -49,7 +49,7 @@ namespace Api.Services
 
             return result;
         }
-        
+
         public ListResult GetList<TDto>(IService<TDto> service)
         {
             var entities = service.GetDto(); //: service.Dto;

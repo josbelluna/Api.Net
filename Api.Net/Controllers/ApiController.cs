@@ -51,7 +51,7 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public virtual IActionResult GetAll([FromQuery]ApiParameter parameter)
+        public virtual IActionResult GetAll([FromQuery] ApiParameter parameter)
         {
             try
             {
