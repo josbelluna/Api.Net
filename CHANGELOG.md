@@ -1,4 +1,11 @@
 # Change Log\n\nAll notable changes to this project will be documented in this file. See [versionize](https://github.com/saintedlama/versionize) for commit guidelines.\n
+<a name="2.3.1"></a>
+## [2.3.1](https://www.github.com/blyzer/Api.Net/releases/tag/v2.3.1) (2021-6-8)
+
+### Bug Fixes
+
+* removing new convention ([c1cec49](https://www.github.com/blyzer/Api.Net/commit/c1cec49f7e74ec1dae7a7b970050b17c455b344b))
+
 <a name="2.3.0.1"></a>
 ## [2.3.0.1](https://www.github.com/blyzer/Api.Net/releases/tag/v2.3.0.1) (2021-6-8)
 
