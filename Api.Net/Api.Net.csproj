@@ -6,7 +6,7 @@
     <Authors>josbelluna</Authors>
     <Company>josbelluna</Company>
     <Description>Simple implementation of web api using the Repository/Service/Dto patterns and based on Asp Net Core Mvc. . Source code and docs in https://github.com/josbelluna/Api.Net </Description>
-    <Version>2.2</Version>
+    <Version>2.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

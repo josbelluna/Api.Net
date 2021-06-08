@@ -1,4 +1,11 @@
 # Change Log\n\nAll notable changes to this project will be documented in this file. See [versionize](https://github.com/saintedlama/versionize) for commit guidelines.\n
+<a name="2.3"></a>
+## [2.3](https://www.github.com/blyzer/Api.Net/releases/tag/v2.3) (2021-6-8)
+
+### Features
+
+* **GetAll-endpoint:** getAll endpoint without parameter ([df9c72b](https://www.github.com/blyzer/Api.Net/commit/df9c72b81f410c6dfe5f3604393f140be0fa1779))
+
 <a name="2.2"></a>
 ## [2.2](https://www.github.com/blyzer/Api.Net/releases/tag/v2.2) (2021-6-7)
 
