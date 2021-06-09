@@ -59,7 +59,7 @@ namespace Api.Controllers
                 parameters.Filters.Add(DtoMetadata.Instance.Convention.ActiveProperty, true);
                 Models.ListResult list = ListService.GetList(Service, parameters).EmptyIfNull();
 
-                return Ok(list);
+                return Ok(list.EmptyIfNull());
             }
             catch (Exception ex)
             {
