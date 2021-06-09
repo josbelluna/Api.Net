@@ -57,7 +57,8 @@ namespace Api.Controllers
             {
                 var parameters = parameter.ProcessParameters(Request.Query);
                 parameters.Filters.Add(DtoMetadata.Instance.Convention.ActiveProperty, true);
-                var list = ListService.GetList(Service, parameters);
+                Models.ListResult list = ListService.GetList(Service, parameters).EmptyIfNull();
+
                 return Ok(list);
             }
             catch (Exception ex)
