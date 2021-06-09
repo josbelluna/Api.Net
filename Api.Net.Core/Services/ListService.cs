@@ -14,13 +14,7 @@ namespace Api.Services
     {
         public ListResult GetList<TDto>(IService<TDto> service, ListParameters parameters)
         {
-            var paramers = parameters;
-            paramers.Descending = true;
-            paramers.PageSize = 10;
-            paramers.CurrentPage = 1;
-
-            parameters = parameters.Expansions.Any() ? parameters : paramers;
-            var entities = parameters.Expansions.Any() ? service.GetDto(ResolveExpansions<TDto>(parameters.Expansions)) : service.Dto;
+            var entities = parameters.Expansions.Any() ? service.GetDto(ResolveExpansions<TDto>(parameters.Expansions)) : service.Dto.DefaultIfEmpty();
 
             //Filter
             var filters = parameters.Filters;
@@ -49,19 +43,6 @@ namespace Api.Services
 
             return result;
         }
-
-        //public ListResult GetList<TDto>(IService<TDto> service)
-        //{
-        //    var entities = service.GetDto(); //: service.Dto;
-
-        //    var result = new ListResult
-        //    {
-        //        Count = entities.Count(),
-        //        Data = entities
-        //    };
-
-        //    return result;
-        //}
 
         private IEnumerable<string> ResolveProjectionProperties(Type type, string projection)
         {

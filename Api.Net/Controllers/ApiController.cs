@@ -66,20 +66,6 @@ namespace Api.Controllers
             }
         }
 
-        //[HttpGet]
-        //public virtual IActionResult GetAll()
-        //{
-        //    try
-        //    {
-        //        var list = ListService.GetList(Service);
-        //        return Ok(list);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.GetInnerMessages());
-        //    }
-        //}
-
         [HttpPost]
         public virtual IActionResult Add([FromBody] TDto dto)
         {
