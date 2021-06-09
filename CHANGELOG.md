@@ -1,4 +1,11 @@
 # Change Log\n\nAll notable changes to this project will be documented in this file. See [versionize](https://github.com/saintedlama/versionize) for commit guidelines.\n
+<a name="2.3.2.2"></a>
+## [2.3.2.2](https://www.github.com/blyzer/Api.Net/releases/tag/v2.3.2.2) (2021-6-8)
+
+### Bug Fixes
+
+* **EmptyIfNull:** Ilist getAll Empty ([28f90c3](https://www.github.com/blyzer/Api.Net/commit/28f90c341a752331a9c91f036a6ad4eb062a0452))
+
 <a name="2.3.2.1"></a>
 ## [2.3.2.1](https://www.github.com/blyzer/Api.Net/releases/tag/v2.3.2.1) (2021-6-8)
 
