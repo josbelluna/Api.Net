@@ -8,10 +8,10 @@ namespace Api.Attributes
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class ApiEndpointAttribute : Attribute
     {
-       public ApiEndpointAttribute(string endpoint)
+        public ApiEndpointAttribute(string endpoint)
         {
             this.Endpoint = endpoint;
         }
-        public string Endpoint { get;  }
+        public string Endpoint { get; }
     }
 }

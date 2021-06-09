@@ -7,7 +7,7 @@ using static Api.Utils.MathUtils;
 
 namespace Api.Utils
 {
-   public static class NumberUtils
+    public static class NumberUtils
     {
 
         public static string ToText(this decimal num)
@@ -15,7 +15,7 @@ namespace Api.Utils
             string res, dec = "";
             Int64 entero;
             int decimales;
-            
+
 
             entero = Convert.ToInt64(Math.Truncate(num));
             decimales = Convert.ToInt32(Round((num - entero) * 100, 2));
@@ -97,5 +97,5 @@ namespace Api.Utils
     }
 
 }
-    
+
 

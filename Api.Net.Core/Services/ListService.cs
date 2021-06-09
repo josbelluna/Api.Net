@@ -14,7 +14,7 @@ namespace Api.Services
     {
         public ListResult GetList<TDto>(IService<TDto> service, ListParameters parameters)
         {
-            var entities = parameters.Expansions.Any() ? service.GetDto(ResolveExpansions<TDto>(parameters.Expansions)) : service.Dto;
+            var entities = parameters.Expansions.Any() ? service.GetDto(ResolveExpansions<TDto>(parameters.Expansions)) : service.Dto.DefaultIfEmpty();
 
             //Filter
             var filters = parameters.Filters;
@@ -38,7 +38,7 @@ namespace Api.Services
             var result = new ListResult
             {
                 Count = count,
-                Data = data
+                Data = data.EmptyIfNull()
             };
 
             return result;

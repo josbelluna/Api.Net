@@ -10,12 +10,13 @@ namespace Api.Exceptions
         public ValidateException() : base() { }
         public ValidateException(string message) : base(message) { }
 
-        public ValidateException(string message,string codigo) : base(message) {
+        public ValidateException(string message, string codigo) : base(message)
+        {
             this.Codigo = codigo;
         }
 
 
         public IEnumerable<string> Errors { get; set; }
-        public string Codigo { get; set; }             
+        public string Codigo { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Api.Services
         }
         public virtual IQueryable<TDto> GetDto()
         {
-            return this.Repository.Entities.ProjectTo<TDto>();
+            return this.Repository.Entities.ProjectTo<TDto>(null, new string[0]);
         }
         public virtual IQueryable<TDto> GetDto(params string[] membersToExpand)
         {
@@ -41,7 +41,12 @@ namespace Api.Services
         {
             if (key is null) throw new ValidateException("Resource not found");
             var entity = this.Repository.Find(key);
-            var dto = Mapper.Map<TDto>(entity);
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TEntity, TDto>();
+            });
+            IMapper mapper = config.CreateMapper();
+            var dto = mapper.Map<TDto>(entity);
             (dto as IDtoEvent<TDto>)?.BeforeGet(dto);
             return dto;
         }
@@ -55,7 +60,13 @@ namespace Api.Services
 
             var entity = this.Repository.Delete(id);
             if (entity == null) throw new ValidateException("Resource not found");
-            return Mapper.Map<TDto>(entity);
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TEntity, TDto>();
+            });
+            IMapper mapper = config.CreateMapper();
+            var dto = mapper.Map<TDto>(entity);
+            return dto;
         }
 
         public virtual TDto Add(TDto dto)
@@ -79,10 +90,20 @@ namespace Api.Services
             ValidateAdd(validator);
             validator.Validate();
 
-            var entity = Mapper.Map<TEntity>(dto);
+            var configEntity = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TDto, TEntity>();
+            });
+            IMapper mapperEntity = configEntity.CreateMapper();
+            var entity = mapperEntity.Map<TEntity>(dto);
             this.Repository.Add(entity);
 
-            dto = Mapper.Map<TDto>(entity);
+            var configDto = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TEntity, TDto>();
+            });
+            IMapper mapperDto = configDto.CreateMapper();
+            dto = mapperDto.Map<TDto>(entity);
             if (dtoEventHandler != null)
             {
                 dtoEventHandler.AfterSave(dto);
@@ -110,8 +131,15 @@ namespace Api.Services
                 dtoEventHandler.BeforeUpdate(dto);
             }
             var entity = this.Repository.Find(key);
-            Mapper.Map(dto, entity);
-            dto = Mapper.Map<TDto>(entity);
+
+            var configDto = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TEntity, TDto>();
+            });
+            IMapper mapperDto = configDto.CreateMapper();
+            dto = mapperDto.Map<TDto>(entity);
+            mapperDto.Map<TDto, TEntity>(dto, entity);
+            dto = mapperDto.Map<TDto>(entity);
 
             var validator = new Validator<TDto>(dto);
             var dtoValidator = dto as IDtoValidator<TDto>;
@@ -126,7 +154,7 @@ namespace Api.Services
             validator.Validate();
 
             this.Repository.Update(entity);
-            dto = Mapper.Map<TDto>(entity);
+            dto = mapperDto.Map<TDto>(entity);
             if (dtoEventHandler != null)
             {
                 dtoEventHandler.AfterSave(dto);
